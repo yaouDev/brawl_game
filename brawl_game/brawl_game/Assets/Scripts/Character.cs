@@ -6,5 +6,8 @@ using UnityEngine;
 public class Character : ScriptableObject
 {
     public string characterName;
+    public float movementSpeed;
+    public float jumpForce;
+    public int jumpAmount;
 
 }
