@@ -6,9 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     private InputMaster controls;
-    public float movementSpeed = 10f;
-    public float jumpForce = 5f;
-    public int jumpAmount = 2;
+    
 
     private float direction;
     private bool moving;
@@ -16,6 +14,13 @@ public class PlayerMovement : MonoBehaviour
     private int jumpCount;
 
     private Rigidbody2D rb;
+    private CapsuleCollider2D col;
+
+    [Header("Read Only")]
+    public float movementSpeed = 10f;
+    public float jumpForce = 5f;
+    public int jumpAmount = 2;
+    public int crouchDivider = 2;
 
     private void Awake()
     {
@@ -23,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Test.performed += ctx => Test();
 
         rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<CapsuleCollider2D>();
     }
 
     private void FixedUpdate()
@@ -34,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //callback calls started, performed, cancelled
+    //callback calls started, performed, canceled
     public void Move(InputAction.CallbackContext ctx)
     {
         direction = ctx.ReadValue<float>();
@@ -54,12 +60,27 @@ public class PlayerMovement : MonoBehaviour
         if (ctx.performed)
         {
             if (isGrounded && jumpCount == 0 || jumpCount < jumpAmount && jumpCount != 0)
-        {
+            {
                 rb.velocity = new Vector2(rb.velocity.x, 0);
                 rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
 
                 jumpCount++;
             }
+        }
+    }
+
+    public void Crouch(InputAction.CallbackContext ctx)
+    {
+        //add visual representation
+        if (ctx.performed)
+        {
+            col.size = new Vector2(col.size.x, col.size.y / crouchDivider);
+            col.offset = new Vector2(0f, -col.size.y / crouchDivider);
+        }
+        else if (ctx.canceled)
+        {
+            col.size = new Vector2(col.size.x, col.size.y * crouchDivider);
+            col.offset = Vector2.zero;
         }
     }
 

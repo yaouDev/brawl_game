@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3bf72c2183b526248aed8998e1789936, type: 3}
-  m_Name: The One and Only
+  m_Name: The Second and Generic
   m_EditorClassIdentifier: 
-  characterName: The One and Only
+  characterName: The Second and Generic
   movementSpeed: 6
-  jumpForce: 12
-  jumpAmount: 2
-  crouchDivider: 2
-  color: {r: 0, g: 0.020182133, b: 1, a: 1}
+  jumpForce: 20
+  jumpAmount: 3
+  crouchDivider: 3
+  color: {r: 1, g: 0, b: 0, a: 1}

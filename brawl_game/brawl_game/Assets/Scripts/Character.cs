@@ -9,5 +9,7 @@ public class Character : ScriptableObject
     public float movementSpeed;
     public float jumpForce;
     public int jumpAmount;
+    public int crouchDivider;
+    public Color color;
 
 }
