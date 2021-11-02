@@ -5,14 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public List<Character> tempCharacters;
+    public List<GameObject> tempCharacters;
 
     public static GameManager instance;
 
-    public Dictionary<int, Character> players = new Dictionary<int, Character>();
+    public Dictionary<int, GameObject> players = new Dictionary<int, GameObject>();
 
     [Header("Read Only")]
     public int activePlayers;
+    public List<CharacterSelection> selections = new List<CharacterSelection>();
 
     private void Awake()
     {
@@ -20,16 +21,40 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void AddPlayer(Character character)
+    public void AddPlayer(CharacterSelection cs)
     {
-        character ??= tempCharacters[Random.Range(0, tempCharacters.Count)];
-
+        selections.Add(cs);
         activePlayers++;
-        players.Add(activePlayers, character);
     }
 
     public void StartGame()
     {
+        if(activePlayers == 0)
+        {
+            Debug.LogWarning("No one is playing!");
+            return;
+        }
+
+        if(selections.Count != activePlayers)
+        {
+            Debug.LogWarning("Unassigned Character Selections");
+            return;
+        }
+
+        foreach(CharacterSelection selection in selections)
+        {
+            if(selection.selected == null)
+            {
+                Debug.Log("Not all players are ready");
+                return;
+            }
+        }
+
+        for (int i = 0; i < activePlayers; i++)
+        {
+            players?.Add(i, selections?[i].selected);
+        }
+
         SceneManager.LoadScene(1);
     }
 

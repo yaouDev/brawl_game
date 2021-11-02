@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerSpawner : MonoBehaviour
 {
     public static PlayerSpawner instance;
 
-    public GameObject player;
     public Transform[] spawnPositions;
 
     private GameManager gm;
-    private Dictionary<int, Player> livingPlayers;
 
     //[Header("Read Only")]
 
@@ -24,22 +23,20 @@ public class PlayerSpawner : MonoBehaviour
 
     public void SpawnPlayers()
     {
-
+        Debug.Log($"Attempting to spawn {gm.activePlayers} players");
 
         for (int i = 0; i < gm.activePlayers; i++)
         {
             Vector3 spawn = spawnPositions[i].position;
-            Player playerInstance = Instantiate(player, spawn, Quaternion.identity).GetComponent<Player>();
-
-            playerInstance.SetId(i + 1);
-
-            if (gm.players.TryGetValue(i + 1, out Character character))
+            if (gm.players.TryGetValue(i, out GameObject player))
             {
-                playerInstance.character = character;
-
-                playerInstance.SetMovement();
-                playerInstance.SetColor(character.color);
+                Player playerInstance = Instantiate(player, spawn, Quaternion.identity).GetComponent<Player>();
             }
+            else
+            {
+                Debug.LogWarning("No player spawned for id " + i);
+            }
+
         }
     }
 }

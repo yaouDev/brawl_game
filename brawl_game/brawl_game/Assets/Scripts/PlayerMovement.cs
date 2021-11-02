@@ -59,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (ctx.performed)
         {
+            //cant jump if havent jumped as grounded
             if (isGrounded && jumpCount == 0 || jumpCount < jumpAmount && jumpCount != 0)
             {
                 rb.velocity = new Vector2(rb.velocity.x, 0);

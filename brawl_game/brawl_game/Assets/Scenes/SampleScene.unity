@@ -762,14 +762,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 128c0ee55ee642341ac22c8576a96c10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 5678455826316014761, guid: b718953ec24e8b54dab5c038c0dfe542, type: 3}
   spawnPositions:
   - {fileID: 1147193720}
   - {fileID: 1354354916}
   - {fileID: 124643786}
   - {fileID: 703490615}
-  allowedPlayers: 4
-  playersThisInstance: 2
 --- !u!1 &1188987181
 GameObject:
   m_ObjectHideFlags: 0
