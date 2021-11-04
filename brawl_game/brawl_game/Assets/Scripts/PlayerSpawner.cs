@@ -23,20 +23,19 @@ public class PlayerSpawner : MonoBehaviour
 
     public void SpawnPlayers()
     {
-        Debug.Log($"Attempting to spawn {gm.activePlayers} players");
+        Debug.Log($"Attempting to spawn {gm.gamePlayers.Count} players");
 
-        for (int i = 0; i < gm.activePlayers; i++)
+        for (int i = 0; i < gm.gamePlayers.Count; i++)
         {
             Vector3 spawn = spawnPositions[i].position;
-            if (gm.players.TryGetValue(i, out GameObject player))
+            if (gm.gamePlayers.TryGetValue(i, out GameObject player))
             {
-                Player playerInstance = Instantiate(player, spawn, Quaternion.identity).GetComponent<Player>();
+                Instantiate(player, spawn, Quaternion.identity);
             }
             else
             {
                 Debug.LogWarning("No player spawned for id " + i);
             }
-
         }
     }
 }
