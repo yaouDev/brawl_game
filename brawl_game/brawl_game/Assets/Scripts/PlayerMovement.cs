@@ -26,35 +26,31 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerInput pi;
 
+    InputAction jump;
 
     //cannot subscribe controls to master, will trigger from anywhere. must subscribe directly from onActionTriggered
     private void Awake()
     {
         controls = new InputMaster();
         pi = transform.parent.gameObject.GetComponent<PlayerInput>();
+
+        //put in seperate method
+        pi.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
+        pi.currentActionMap = controls.Player.Get();
+        pi.defaultActionMap = controls.Player.Get().name;
+        //FIGURE OUT HOW TO SWITCH ACTION MAPS AT RUN TIME
+        //--
+
+        controls.Player.Test.performed += ctx => Test(pi);
+        controls.Player.Movement.performed += ctx => MoveCE(ctx.ReadValue<float>(), true);
+        controls.Player.Movement.canceled += ctx => MoveCE(ctx.ReadValue<float>(), false);
+        controls.Player.Jump.performed += _ => JumpCE();
+        controls.Player.Crouch.performed += _ => CrouchCE(1);
+        controls.Player.Crouch.canceled += _ => CrouchCE(-1);
+
         pi.onActionTriggered += ctx => ReadAction(ctx);
 
-        switch (transform.parent.gameObject.GetComponent<Player>().playerId)
-        {
-            case 0:
-                controls.Player1.Test.performed += ctx => Test(pi);
-                controls.Player1.Movement.performed += ctx => MoveCE(ctx.ReadValue<float>(), true);
-                controls.Player1.Movement.canceled += ctx => MoveCE(ctx.ReadValue<float>(), false);
-                controls.Player1.Jump.performed += _ => JumpCE();
-                controls.Player1.Crouch.performed += _ => CrouchCE(1);
-                controls.Player1.Crouch.canceled += _ => CrouchCE(-1);
-                break;
-            case 1:
-                controls.Player2.Test.performed += ctx => Test(pi);
-                controls.Player2.Movement.performed += ctx => MoveCE(ctx.ReadValue<float>(), true);
-                controls.Player2.Movement.canceled += ctx => MoveCE(ctx.ReadValue<float>(), false);
-                controls.Player2.Jump.performed += _ => JumpCE();
-                controls.Player2.Crouch.performed += _ => CrouchCE(1);
-                controls.Player2.Crouch.canceled += _ => CrouchCE(-1);
-                break;
-            default:
-                break;
-        }
+        //jump = controls.Player.Jump;
 
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
@@ -63,6 +59,33 @@ public class PlayerMovement : MonoBehaviour
     private void ReadAction(InputAction.CallbackContext ctx)
     {
         //read action and trigger appropriate method
+        Debug.Log(pi.currentActionMap);
+
+        if(ctx.action == controls.MenuPlayer.Move)
+        {
+            print("ligma");
+        }
+
+        if(ctx.action == controls.Player.Jump)
+        {
+            print("yahoo");
+        }
+
+        //switch (ctx.action)
+        //{
+        //    case jump:
+        //        JumpCE();
+        //        break;
+        //    default:
+        //        break;
+        //}
+
+        //controls.Player.Test.performed += ctx => Test(pi);
+        //controls.Player.Movement.performed += ctx => MoveCE(ctx.ReadValue<float>(), true);
+        //controls.Player.Movement.canceled += ctx => MoveCE(ctx.ReadValue<float>(), false);
+        //controls.Player.Jump.performed += _ => JumpCE();
+        //controls.Player.Crouch.performed += _ => CrouchCE(1);
+        //controls.Player.Crouch.canceled += _ => CrouchCE(-1);
     }
 
     private void FixedUpdate()
@@ -190,11 +213,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        controls.Enable();
+        controls.Player.Enable();
     }
 
     private void OnDisable()
     {
-        controls.Disable();
+        controls.Player.Disable();
     }
 }

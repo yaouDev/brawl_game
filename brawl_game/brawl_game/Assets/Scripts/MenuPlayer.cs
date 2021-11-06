@@ -14,17 +14,19 @@ public class MenuPlayer : MonoBehaviour
     [Header("Read Only")]
     public bool isSelecting;
 
-
+    private InputMaster controls;
 
     //---
 
     //public InputMaster controls;
 
+    //write a script that acts as a middle man on the player object that gives appropriate actions to an instansiated script?
+
     private void Awake()
     {
         isKeyboard = transform.parent.GetComponent<PlayerInput>().currentControlScheme == "Keyboard";
 
-        //controls = new InputMaster();
+        controls = new InputMaster();
         //controls.MenuPlayer.Select.performed += ctx => Select();
         //controls.MenuPlayer.Select.canceled += ctx => Select();
         //controls.MenuPlayer.Move.performed += ctx => Move(ctx.ReadValue<Vector2>(), true);
@@ -71,13 +73,13 @@ public class MenuPlayer : MonoBehaviour
         isSelecting = !isSelecting;
     }
 
-    //private void OnEnable()
-    //{
-    //    controls.Enable();
-    //}
+    private void OnEnable()
+    {
+        controls.MenuPlayer.Enable();
+    }
 
-    //private void OnDisable()
-    //{
-    //    controls.Disable();
-    //}
+    private void OnDisable()
+    {
+        controls.MenuPlayer.Disable();
+    }
 }
