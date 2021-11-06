@@ -7,10 +7,9 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    private static int playerCounter;
+    public GameState state { get; private set; }
 
-    public Dictionary<int, GameObject> menuPlayers = new Dictionary<int, GameObject>();
-    public Dictionary<int, GameObject> gamePlayers = new Dictionary<int, GameObject>();
+    private PlayerManager pm;
 
     //[Header("Read Only")]
     //public int activePlayers;
@@ -21,28 +20,23 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void Participate()
+    private void Start()
     {
-        PlayerInput[] users = FindObjectsOfType<PlayerInput>();
-        foreach(PlayerInput pi in users)
-        {
-            menuPlayers.Add(playerCounter, pi.gameObject);
-            CharacterSelection selection = pi.gameObject.AddComponent<CharacterSelection>();
-            pi.gameObject.GetComponent<MenuPlayer>().characterSelection = selection;
+        pm = PlayerManager.instance;
 
-            playerCounter++;
-        }
+        //dev use
+        SetGameState(GameState.characterSelection);
     }
 
     public void StartGame()
     {
-        if(menuPlayers.Count == 0)
+        if(pm.players.Count == 0)
         {
             Debug.LogWarning("No one is playing!");
             return;
         }
 
-        foreach(GameObject player in menuPlayers.Values)
+        foreach(GameObject player in pm.players.Values)
         {
             if(player.TryGetComponent(out CharacterSelection cs))
             {
@@ -52,16 +46,27 @@ public class GameManager : MonoBehaviour
                     return;
                 }
             }
+            else
+            {
+                Debug.LogWarning("Player without CharacterSelection present");
+                return;
+            }
         }
 
-        //overwrite playerprefab
-        foreach(KeyValuePair<int, GameObject> entry in menuPlayers)
-        {
-            GameObject character = entry.Value?.GetComponent<CharacterSelection>()?.selected;
-            gamePlayers.Add(entry.Key, character);
-        }
+        //on success
 
+        SetGameState(GameState.game);
         SceneManager.LoadScene(1);
     }
 
+    public void SetGameState(GameState newState)
+    {
+        state = newState;
+    }
+
+}
+
+public enum GameState
+{
+    mainMenu, characterSelection, game
 }

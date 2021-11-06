@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     private InputMaster controls;
-    
+
 
     private float direction;
     private bool moving;
@@ -22,13 +22,47 @@ public class PlayerMovement : MonoBehaviour
     public int jumpAmount = 2;
     public int crouchDivider = 2;
 
+    //--
+
+    private PlayerInput pi;
+
+
+    //cannot subscribe controls to master, will trigger from anywhere. must subscribe directly from onActionTriggered
     private void Awake()
     {
         controls = new InputMaster();
-        controls.Player.Test.performed += ctx => Test();
+        pi = transform.parent.gameObject.GetComponent<PlayerInput>();
+        pi.onActionTriggered += ctx => ReadAction(ctx);
+
+        switch (transform.parent.gameObject.GetComponent<Player>().playerId)
+        {
+            case 0:
+                controls.Player1.Test.performed += ctx => Test(pi);
+                controls.Player1.Movement.performed += ctx => MoveCE(ctx.ReadValue<float>(), true);
+                controls.Player1.Movement.canceled += ctx => MoveCE(ctx.ReadValue<float>(), false);
+                controls.Player1.Jump.performed += _ => JumpCE();
+                controls.Player1.Crouch.performed += _ => CrouchCE(1);
+                controls.Player1.Crouch.canceled += _ => CrouchCE(-1);
+                break;
+            case 1:
+                controls.Player2.Test.performed += ctx => Test(pi);
+                controls.Player2.Movement.performed += ctx => MoveCE(ctx.ReadValue<float>(), true);
+                controls.Player2.Movement.canceled += ctx => MoveCE(ctx.ReadValue<float>(), false);
+                controls.Player2.Jump.performed += _ => JumpCE();
+                controls.Player2.Crouch.performed += _ => CrouchCE(1);
+                controls.Player2.Crouch.canceled += _ => CrouchCE(-1);
+                break;
+            default:
+                break;
+        }
 
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
+    }
+
+    private void ReadAction(InputAction.CallbackContext ctx)
+    {
+        //read action and trigger appropriate method
     }
 
     private void FixedUpdate()
@@ -39,6 +73,45 @@ public class PlayerMovement : MonoBehaviour
             transform.position += movement * Time.deltaTime * movementSpeed;
         }
     }
+
+    public virtual void MoveCE(float dir, bool active)
+    {
+        direction = dir;
+
+        moving = active;
+    }
+
+    public virtual void JumpCE()
+    {
+        //cant jump if havent jumped as grounded
+        if (isGrounded && jumpCount == 0 || jumpCount < jumpAmount && jumpCount != 0)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+
+            jumpCount++;
+        }
+    }
+
+    public virtual void CrouchCE(int performed)
+    {
+        if (performed > 0)
+        {
+            col.size = new Vector2(col.size.x, col.size.y / crouchDivider);
+            col.offset = new Vector2(0f, -col.size.y / crouchDivider);
+
+            transform.localScale *= 0.5f;
+        }
+        else if (performed < 0)
+        {
+            col.size = new Vector2(col.size.x, col.size.y * crouchDivider);
+            col.offset = Vector2.zero;
+
+            transform.localScale *= 2f;
+        }
+    }
+
+    //------------
 
     //callback calls started, performed, canceled
     public void Move(InputAction.CallbackContext ctx)
@@ -110,9 +183,9 @@ public class PlayerMovement : MonoBehaviour
         return collision.gameObject.transform.position.y < transform.position.y && correctTag ? true : false;
     }
 
-    void Test()
+    void Test(PlayerInput pi)
     {
-        Debug.Log("test");
+        Debug.Log(pi.playerIndex);
     }
 
     private void OnEnable()

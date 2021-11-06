@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public int id { get; private set; }
+    public int playerId { get; private set; }
 
-    public void SetId(int playerId)
+    private void Awake()
     {
-        id = playerId;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    public void SetId(int id)
+    {
+        playerId = id;
     }
 }

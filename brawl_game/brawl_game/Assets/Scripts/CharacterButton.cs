@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CharacterButton : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class CharacterButton : MonoBehaviour
         {
             if (go.TryGetComponent(out MenuPlayer player))
             {
-                if (go.TryGetComponent(out CharacterSelection cs) && player.isSelecting)
+                if (go.transform.parent.TryGetComponent(out CharacterSelection cs) && player.isSelecting)
                 {
                     cs.selected = character;
                 }
