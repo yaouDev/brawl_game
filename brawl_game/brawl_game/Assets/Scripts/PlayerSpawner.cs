@@ -28,19 +28,38 @@ public class PlayerSpawner : MonoBehaviour
         Debug.Log($"Attempting to spawn {pm.players.Count} players");
 
         int spawnCounter = 0;
+
+        //change actionmap
+        InputMaster controls = new InputMaster();
+        controls.Disable();
+        controls.Player.Enable();
+        //pm.ToggleActionMap(pm.inputActions.Player);
+
         foreach (GameObject go in pm.players.Values)
         {
             go.GetComponentInChildren<MenuPlayer>().gameObject.SetActive(false);
 
-            Instantiate(go.GetComponentInChildren<CharacterSelection>().selected, go.transform);
+            Instantiate(go.GetComponent<CharacterSelection>().selected, go.transform);
+
+            PlayerControls pc = go.GetComponent<PlayerControls>();
+            pc?.GetPlayerMovement();
+
+            PlayerInput pi = go.GetComponent<PlayerInput>();
+
+            pi.defaultActionMap = pm.inputActions.Player.Get().name;
+            pi.currentActionMap = pm.inputActions.Player;
+
+            //dev use
+            print(pi.currentActionMap);
+            print(pm.inputActions.Player.enabled);
+            print(pi.defaultActionMap);
+
+            //destroy things
+            //Destroy(go.GetComponentInChildren<MenuPlayer>().gameObject);
+            //Destroy(go.GetComponent<CharacterSelection>());
+
             go.transform.position = spawnPositions[spawnCounter].position;
             spawnCounter++;
         }
-    }
-
-    private void ChangeActionMap(GameObject go)
-    {
-        InputMaster im = new InputMaster();
-        //go.GetComponent<PlayerInput>().currentActionMap = im.Player;
     }
 }

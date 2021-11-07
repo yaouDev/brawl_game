@@ -73,13 +73,15 @@ public class MenuPlayer : MonoBehaviour
         isSelecting = !isSelecting;
     }
 
-    private void OnEnable()
-    {
-        controls.MenuPlayer.Enable();
-    }
+    //private void OnEnable()
+    //{
+    //    //controls.MenuPlayer.Enable();
+    //    controls.Enable();
+    //}
 
-    private void OnDisable()
-    {
-        controls.MenuPlayer.Disable();
-    }
+    //private void OnDisable()
+    //{
+    //    //controls.MenuPlayer.Disable();
+    //    controls.Disable();
+    //}
 }

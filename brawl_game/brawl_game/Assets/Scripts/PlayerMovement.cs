@@ -26,31 +26,10 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerInput pi;
 
-    InputAction jump;
-
-    //cannot subscribe controls to master, will trigger from anywhere. must subscribe directly from onActionTriggered
     private void Awake()
     {
         controls = new InputMaster();
         pi = transform.parent.gameObject.GetComponent<PlayerInput>();
-
-        //put in seperate method
-        pi.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
-        pi.currentActionMap = controls.Player.Get();
-        pi.defaultActionMap = controls.Player.Get().name;
-        //FIGURE OUT HOW TO SWITCH ACTION MAPS AT RUN TIME
-        //--
-
-        controls.Player.Test.performed += ctx => Test(pi);
-        controls.Player.Movement.performed += ctx => MoveCE(ctx.ReadValue<float>(), true);
-        controls.Player.Movement.canceled += ctx => MoveCE(ctx.ReadValue<float>(), false);
-        controls.Player.Jump.performed += _ => JumpCE();
-        controls.Player.Crouch.performed += _ => CrouchCE(1);
-        controls.Player.Crouch.canceled += _ => CrouchCE(-1);
-
-        pi.onActionTriggered += ctx => ReadAction(ctx);
-
-        //jump = controls.Player.Jump;
 
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
@@ -70,15 +49,6 @@ public class PlayerMovement : MonoBehaviour
         {
             print("yahoo");
         }
-
-        //switch (ctx.action)
-        //{
-        //    case jump:
-        //        JumpCE();
-        //        break;
-        //    default:
-        //        break;
-        //}
 
         //controls.Player.Test.performed += ctx => Test(pi);
         //controls.Player.Movement.performed += ctx => MoveCE(ctx.ReadValue<float>(), true);
@@ -211,13 +181,15 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log(pi.playerIndex);
     }
 
-    private void OnEnable()
-    {
-        controls.Player.Enable();
-    }
+    //private void OnEnable()
+    //{
+    //    //controls.Player.Enable();
+    //    controls.Enable();
+    //}
 
-    private void OnDisable()
-    {
-        controls.Player.Disable();
-    }
+    //private void OnDisable()
+    //{
+    //    //controls.Player.Disable();
+    //    controls.Disable();
+    //}
 }

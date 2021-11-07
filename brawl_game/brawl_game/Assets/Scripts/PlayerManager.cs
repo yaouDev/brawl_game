@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class PlayerManager : MonoBehaviour
     public GameObject menuPlayerPrefab;
 
     private static int playerCounter;
+    public InputMaster inputActions;
+    //public event Action<InputActionMap> actionMapChange;
     private GameManager gm;
 
     public Dictionary<int, GameObject> players = new Dictionary<int, GameObject>();
@@ -23,12 +26,15 @@ public class PlayerManager : MonoBehaviour
         instance ??= this;
 
         DontDestroyOnLoad(gameObject);
+        inputActions = new InputMaster();
     }
 
     private void Start()
     {
         pim = GetComponent<PlayerInputManager>();
         gm = GameManager.instance;
+
+        //ToggleActionMap(inputActions.MenuPlayer);
 
         pim.onPlayerJoined += player => AddPlayer(player);
     }
@@ -70,11 +76,15 @@ public class PlayerManager : MonoBehaviour
         players.Remove(id);
     }
 
-    public void ConvertToGameMap()
-    {
-        foreach(GameObject go in players.Values)
-        {
+    //public void ToggleActionMap(InputActionMap actionMap)
+    //{
+    //    if (actionMap.enabled)
+    //    {
+    //        return;
+    //    }
 
-        }
-    }
+    //    inputActions.Disable();
+    //    actionMapChange?.Invoke(actionMap);
+    //    actionMap.Enable();
+    //}
 }
