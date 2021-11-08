@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerControls : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement movement;
+    [Header("Read Only")]
+    private PlayerMovement movement;
     private Player player;
 
     private void Start()
@@ -25,15 +26,26 @@ public class PlayerControls : MonoBehaviour
 
     public void Move(InputAction.CallbackContext ctx)
     {
-        print("move");
-
-        movement.Move(ctx);
+        movement?.Move(ctx);
     }
 
     public void Jump(InputAction.CallbackContext ctx)
     {
-        print("jump");
+        movement?.Jump(ctx);
+    }
 
-        movement.Jump(ctx);
+    public void Crouch(InputAction.CallbackContext ctx)
+    {
+        movement?.Crouch(ctx);
+    }
+
+    public void Dodge(InputAction.CallbackContext ctx)
+    {
+        movement?.Dodge(ctx);
+    }
+
+    public void OnDeath()
+    {
+        movement = null;
     }
 }

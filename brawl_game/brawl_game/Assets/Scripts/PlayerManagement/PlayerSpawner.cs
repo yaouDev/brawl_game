@@ -25,6 +25,12 @@ public class PlayerSpawner : MonoBehaviour
 
     public void SpawnPlayers()
     {
+        if(gm.state != GameState.game)
+        {
+            Debug.LogWarning("Trying to spawn players while not in-game!");
+            return;
+        }
+
         Debug.Log($"Attempting to spawn {pm.players.Count} players");
 
         int spawnCounter = 0;
@@ -45,19 +51,13 @@ public class PlayerSpawner : MonoBehaviour
             pc?.GetPlayerMovement();
 
             PlayerInput pi = go.GetComponent<PlayerInput>();
-
-            pi.defaultActionMap = pm.inputActions.Player.Get().name;
-            pi.currentActionMap = pm.inputActions.Player;
-
-            //dev use
-            print(pi.currentActionMap);
-            print(pm.inputActions.Player.enabled);
-            print(pi.defaultActionMap);
+            pi.SwitchCurrentActionMap(pm.inputActions.Player.Get().name);
 
             //destroy things
             //Destroy(go.GetComponentInChildren<MenuPlayer>().gameObject);
             //Destroy(go.GetComponent<CharacterSelection>());
 
+            go.GetComponent<PlayerState>().Refresh();
             go.transform.position = spawnPositions[spawnCounter].position;
             spawnCounter++;
         }

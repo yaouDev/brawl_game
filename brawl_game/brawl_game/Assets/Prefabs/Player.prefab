@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8388422986168571998}
   - component: {fileID: 5006034968710296151}
   - component: {fileID: 2762847903711006833}
+  - component: {fileID: 4533024054348966365}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -80,7 +81,19 @@ MonoBehaviour:
     m_ActionId: 73cb4b51-1617-416c-b33a-4c1f7fbaab83
     m_ActionName: Player/Movement[/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/right]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2762847903711006833}
+        m_TargetAssemblyTypeName: PlayerControls, Assembly-CSharp
+        m_MethodName: Crouch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 5329fe96-2386-4bcf-ace2-373e617f90d9
     m_ActionName: Player/Crouch[/Keyboard/s,/XInputControllerWindows/leftStick/down]
   - m_PersistentCalls:
@@ -100,7 +113,19 @@ MonoBehaviour:
     m_ActionId: 56db36ad-7d5b-433f-a6fa-e81ce0f38180
     m_ActionName: Player/Jump[/Keyboard/w,/Keyboard/space,/XInputControllerWindows/leftStick/up,/XInputControllerWindows/buttonSouth]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2762847903711006833}
+        m_TargetAssemblyTypeName: PlayerControls, Assembly-CSharp
+        m_MethodName: Dodge
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: ff78afe8-30b2-4b93-85e3-74d833a82809
     m_ActionName: Player/Dodge
   - m_PersistentCalls:
@@ -168,7 +193,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c76f9945c2ebd4897cefd5d254e699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 0}
+--- !u!114 &4533024054348966365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8388422986168571997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79e66e72883555444b9fbb6b0e199102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4874383556573300662
 PrefabInstance:
   m_ObjectHideFlags: 0

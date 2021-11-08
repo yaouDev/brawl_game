@@ -57,7 +57,7 @@ public class PlayerManager : MonoBehaviour
 
         AddCharacterSelection();
 
-        print($"Active players: {playerCounter}");
+        print($"Active players: {players.Count}");
     }
 
     public void AddCharacterSelection()

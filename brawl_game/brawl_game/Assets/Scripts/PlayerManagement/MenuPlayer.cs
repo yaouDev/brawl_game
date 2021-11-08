@@ -13,8 +13,9 @@ public class MenuPlayer : MonoBehaviour
 
     [Header("Read Only")]
     public bool isSelecting;
+    public bool isBacking;
 
-    private InputMaster controls;
+    //private InputMaster controls;
 
     //---
 
@@ -26,7 +27,7 @@ public class MenuPlayer : MonoBehaviour
     {
         isKeyboard = transform.parent.GetComponent<PlayerInput>().currentControlScheme == "Keyboard";
 
-        controls = new InputMaster();
+        //controls = new InputMaster();
         //controls.MenuPlayer.Select.performed += ctx => Select();
         //controls.MenuPlayer.Select.canceled += ctx => Select();
         //controls.MenuPlayer.Move.performed += ctx => Move(ctx.ReadValue<Vector2>(), true);
@@ -40,11 +41,11 @@ public class MenuPlayer : MonoBehaviour
             if (isKeyboard)
             {
                 Vector3 mousePos = Camera.main.ScreenToWorldPoint(direction);
-                transform.parent.position = new Vector3(mousePos.x, mousePos.y, 0f);
+                transform.position = new Vector3(mousePos.x, mousePos.y, 0f);
             }
             else
             {
-                transform.parent.position += (Vector3)direction * Time.deltaTime * moveSpeed;
+                transform.position += (Vector3)direction * Time.deltaTime * moveSpeed;
             }
         }
     }
@@ -61,17 +62,22 @@ public class MenuPlayer : MonoBehaviour
         isSelecting = ctx.performed;
     }
 
-    public void Move(Vector2 dir, bool move)
+    public void BackUE(InputAction.CallbackContext ctx)
     {
-        direction = dir;
-
-        moving = move;
+        isBacking = ctx.performed;
     }
 
-    public void Select()
-    {
-        isSelecting = !isSelecting;
-    }
+    //public void Move(Vector2 dir, bool move)
+    //{
+    //    direction = dir;
+
+    //    moving = move;
+    //}
+
+    //public void Select()
+    //{
+    //    isSelecting = !isSelecting;
+    //}
 
     //private void OnEnable()
     //{
