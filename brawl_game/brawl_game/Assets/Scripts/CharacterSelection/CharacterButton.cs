@@ -1,43 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class CharacterButton : MonoBehaviour
+public class CharacterButton : MyButton
 {
     public GameObject character;
 
-    [Header("Read Only")]
-    public List<GameObject> entered = new List<GameObject>();
-
-    private void OnTriggerEnter2D(Collider2D collider)
+    public override void Trigger(GameObject go)
     {
-        GameObject go = collider.gameObject;
-
-        entered.Add(go);
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        foreach(GameObject go in entered)
+        if(go.transform.parent.TryGetComponent(out CharacterSelection cs))
         {
-            if (go.TryGetComponent(out MenuPlayer player))
-            {
-                if (go.transform.parent.TryGetComponent(out CharacterSelection cs) && player.isSelecting)
-                {
-                    cs.selected = character;
-                }
-            }
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collider)
-    {
-        GameObject go = collider.gameObject;
-
-        if (entered.Contains(go))
-        {
-            entered.Remove(go);
+            cs.selected = character;
         }
     }
 }

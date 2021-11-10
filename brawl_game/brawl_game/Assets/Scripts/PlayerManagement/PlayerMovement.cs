@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Read Only")]
     public float movementSpeed = 10f;
-    public float jumpForce = 5f;
+    public float jumpForce = 22f;
     public int jumpAmount = 2;
     public int crouchDivider = 2;
 
@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
     //------------
 
     //callback calls started, performed, canceled
-    public void Move(InputAction.CallbackContext ctx)
+    public virtual void Move(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
         {
@@ -120,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void Jump(InputAction.CallbackContext ctx)
+    public virtual void Jump(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
         {
@@ -135,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void Crouch(InputAction.CallbackContext ctx)
+    public virtual void Crouch(InputAction.CallbackContext ctx)
     {
         //add visual representation
         if (ctx.performed)
@@ -154,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void Dodge(InputAction.CallbackContext ctx)
+    public virtual void Dodge(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
         {

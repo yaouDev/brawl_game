@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 5678455826316014762}
   - component: {fileID: 5678455826316014763}
   - component: {fileID: 5678455826316014756}
+  - component: {fileID: 8804117685592655104}
   - component: {fileID: 5678455826316014757}
-  - component: {fileID: 5678455826316014760}
   m_Layer: 0
   m_Name: PlayerAlt 2
   m_TagString: Player
@@ -101,6 +101,22 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.2, y: 0.2}
   m_Direction: 0
+--- !u!114 &8804117685592655104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5678455826316014761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15608f12547515543891a3a7bb6df081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 10
+  jumpForce: 22
+  jumpAmount: 2
+  crouchDivider: 2
 --- !u!50 &5678455826316014757
 Rigidbody2D:
   serializedVersion: 4
@@ -122,35 +138,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &5678455826316014760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5678455826316014761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e04bec960fa28fa48bba03f419fafdb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jump:
-    m_Name: Jump
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 1a557c07-86e4-4147-ab8e-fdb4381cc7f2
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 88fadb11-4d2a-40b0-b700-b52e77854395
-      m_Path: <Keyboard>/space
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Jump
-      m_Flags: 0
-  movementSpeed: 10
-  jumpForce: 22
-  jumpAmount: 2
-  crouchDivider: 2
