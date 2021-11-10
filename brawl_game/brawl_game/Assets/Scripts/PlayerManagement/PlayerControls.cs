@@ -5,13 +5,19 @@ using UnityEngine.InputSystem;
 
 public class PlayerControls : MonoBehaviour
 {
-    [Header("Read Only")]
+    //[Header("Read Only")]
+    //wipe upon start
+    public Vector2 aim { get; private set; }
+    private float lookAngle;
+    //--
+
+
     private PlayerMovement movement;
-    private Player player;
+    private Player playerInfo;
 
     private void Start()
     {
-        player = GetComponent<Player>();
+        playerInfo = GetComponent<Player>();
     }
 
     public void GetPlayerMovement()
@@ -20,7 +26,15 @@ public class PlayerControls : MonoBehaviour
 
         if(movement == null)
         {
-            Debug.LogWarning($"No movement for player {player.playerId}");
+            Debug.LogWarning($"No movement for player {playerInfo.playerId}");
+        }
+    }
+
+    public void ReadDirection(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            aim = ctx.ReadValue<Vector2>();
         }
     }
 
@@ -44,8 +58,17 @@ public class PlayerControls : MonoBehaviour
         movement?.Dodge(ctx);
     }
 
+    public Quaternion GetAngle()
+    {
+        float angle = Mathf.Atan2(aim.y, aim.x);
+        angle *= Mathf.Rad2Deg;
+
+        return Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, angle + 90f);
+    }
+
     public void OnDeath()
     {
         movement = null;
+        aim = Vector2.zero;
     }
 }

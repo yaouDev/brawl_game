@@ -164,6 +164,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 8607d0bc-da57-4f2d-b135-ac6a4a2f1248
     m_ActionName: MenuPlayer/Move[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/right]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2762847903711006833}
+        m_TargetAssemblyTypeName: PlayerControls, Assembly-CSharp
+        m_MethodName: ReadDirection
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 39c9d868-a898-4109-b41b-29ac1beee188
+    m_ActionName: Player/Aim[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: MenuPlayer
@@ -193,6 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c76f9945c2ebd4897cefd5d254e699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aim: {x: 0, y: 0}
 --- !u!114 &4533024054348966365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,6 +222,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e66e72883555444b9fbb6b0e199102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingLives: 3
+  childPlayer: {fileID: 0}
+  currentLives: 0
 --- !u!1001 &4874383556573300662
 PrefabInstance:
   m_ObjectHideFlags: 0
