@@ -8,10 +8,9 @@ public class PlayerControls : MonoBehaviour
     //[Header("Read Only")]
     //wipe upon start
     public Vector2 aim { get; private set; }
-    private float lookAngle;
     //--
 
-
+    private PlayerCombat combat;
     private PlayerMovement movement;
     private Player playerInfo;
 
@@ -20,13 +19,20 @@ public class PlayerControls : MonoBehaviour
         playerInfo = GetComponent<Player>();
     }
 
-    public void GetPlayerMovement()
+    public void GetPlayerScripts()
     {
         movement ??= GetComponentInChildren<PlayerMovement>();
 
         if(movement == null)
         {
             Debug.LogWarning($"No movement for player {playerInfo.playerId}");
+        }
+
+        combat ??= GetComponentInChildren<PlayerCombat>();
+
+        if (combat == null)
+        {
+            Debug.LogWarning($"No combat for player {playerInfo.playerId}");
         }
     }
 

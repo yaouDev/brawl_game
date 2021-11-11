@@ -8,7 +8,7 @@ public class CharacterButton : MyButton
 
     public override void Trigger(GameObject go)
     {
-        if(go.transform.parent.TryGetComponent(out CharacterSelection cs))
+        if (go.transform.parent.TryGetComponent(out CharacterSelection cs))
         {
             cs.selected = character;
         }

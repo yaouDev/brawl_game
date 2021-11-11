@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private InputMaster controls;
 
-
+    [SerializeField] private float dashFailTime = 3f;
     private float direction;
     private bool moving;
     private bool isGrounded;
@@ -15,12 +15,15 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D rb;
     private CapsuleCollider2D col;
+    private PlayerControls pc;
 
     [Header("Read Only")]
     public float movementSpeed = 10f;
     public float jumpForce = 22f;
     public int jumpAmount = 2;
     public int crouchDivider = 2;
+    public float dashSpeed = 2f;
+    public float dashDistance = 5f;
 
     //--
 
@@ -33,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
+        pc = transform.parent.GetComponent<PlayerControls>();
     }
 
     //private void ReadAction(InputAction.CallbackContext ctx)
@@ -158,8 +162,29 @@ public class PlayerMovement : MonoBehaviour
     {
         if (ctx.performed)
         {
-            Debug.LogWarning("TODO: Implement dodge!");
+            StartCoroutine(Dash());
         }
+    }
+
+    public IEnumerator Dash()
+    {
+        Vector3 startPos = transform.position;
+        Vector3 endPos = startPos + (Vector3)(pc.aim * dashDistance);
+        float end = Time.time + dashFailTime;
+        while(Time.time < end || transform.position != endPos)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, endPos, dashSpeed);
+            if (Vector3.Distance(transform.position, endPos) < 0.0025f)
+            {
+                break;
+            }
+            yield return null;
+        }
+
+        rb.velocity = Vector2.zero;
+        rb.AddForce(pc.aim * dashSpeed, ForceMode2D.Impulse);
+
+        Debug.Log("Dash!");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

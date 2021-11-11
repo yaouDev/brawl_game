@@ -48,7 +48,7 @@ public class PlayerSpawner : MonoBehaviour
             Instantiate(go.GetComponent<CharacterSelection>().selected, go.transform);
 
             PlayerControls pc = go.GetComponent<PlayerControls>();
-            pc?.GetPlayerMovement();
+            pc?.GetPlayerScripts();
 
             PlayerInput pi = go.GetComponent<PlayerInput>();
             pi.SwitchCurrentActionMap(pm.inputActions.Player.Get().name);
