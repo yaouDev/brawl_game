@@ -160,6 +160,7 @@ public class PlayerMovement : MonoBehaviour
 
     public virtual void Dodge(InputAction.CallbackContext ctx)
     {
+        //you can dash through platforms...
         if (ctx.performed)
         {
             StartCoroutine(Dash());
