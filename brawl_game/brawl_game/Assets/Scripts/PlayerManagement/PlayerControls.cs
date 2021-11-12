@@ -44,6 +44,7 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
+    //Movement
     public void Move(InputAction.CallbackContext ctx)
     {
         movement?.Move(ctx);
@@ -63,6 +64,24 @@ public class PlayerControls : MonoBehaviour
     {
         movement?.Dodge(ctx);
     }
+    //--
+
+    //Combat
+    public void LightAttack(InputAction.CallbackContext ctx)
+    {
+        combat?.LightAttack(ctx);
+    }
+
+    public void HeavyAttack(InputAction.CallbackContext ctx)
+    {
+        combat?.HeavyAttack(ctx);
+    }
+
+    public void SpecialAttack(InputAction.CallbackContext ctx)
+    {
+        combat?.SpecialAttack(ctx);
+    }
+    //-- 
 
     public Quaternion GetAngle()
     {

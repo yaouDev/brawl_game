@@ -66,8 +66,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (moving)
         {
+            //acts weird with outside forces
             Vector3 movement = new Vector3(direction, 0f);
             transform.position += movement * Time.deltaTime * movementSpeed;
+            //rb.position += movement * Time.deltaTime * modifiedMovementSpeed;
         }
     }
 
@@ -190,9 +192,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        print("enter");
         isGrounded = GroundedCollision(collision);
-        jumpCount = 0;
+
+        if (isGrounded) jumpCount = 0;
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -211,7 +213,7 @@ public class PlayerMovement : MonoBehaviour
     private bool GroundedCollision(Collision2D collision)
     {
         bool correctTag = collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Player") ? true : false;
-        return collision.gameObject.transform.position.y < transform.position.y && correctTag ? true : false;
+        return (collision.gameObject.transform.position.y < transform.position.y && correctTag) ? true : false;
     }
 
     //void Test(PlayerInput pi)

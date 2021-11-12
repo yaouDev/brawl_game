@@ -29,6 +29,7 @@ public class PlayerState : MonoBehaviour
             Eliminate();
         }
 
+        childPlayer.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         Respawn();
     }
 

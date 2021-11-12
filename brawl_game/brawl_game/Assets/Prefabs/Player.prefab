@@ -180,6 +180,54 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 39c9d868-a898-4109-b41b-29ac1beee188
     m_ActionName: Player/Aim[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2762847903711006833}
+        m_TargetAssemblyTypeName: PlayerControls, Assembly-CSharp
+        m_MethodName: LightAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a1614c8c-cf58-42cc-b6b1-420c6a4b4132
+    m_ActionName: Player/LightAttack[/Keyboard/j,/Keyboard/leftArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2762847903711006833}
+        m_TargetAssemblyTypeName: PlayerControls, Assembly-CSharp
+        m_MethodName: HeavyAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: cc97e78a-de0a-48de-a1a1-6f9b20813d61
+    m_ActionName: Player/HeavyAttack[/Keyboard/i,/Keyboard/upArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2762847903711006833}
+        m_TargetAssemblyTypeName: PlayerControls, Assembly-CSharp
+        m_MethodName: SpecialAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 447f6790-0ffe-450d-bcde-6262e080e894
+    m_ActionName: Player/SpecialAttack[/Keyboard/rightArrow,/Keyboard/l]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: MenuPlayer
@@ -209,7 +257,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c76f9945c2ebd4897cefd5d254e699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aim: {x: 0, y: 0}
 --- !u!114 &4533024054348966365
 MonoBehaviour:
   m_ObjectHideFlags: 0
