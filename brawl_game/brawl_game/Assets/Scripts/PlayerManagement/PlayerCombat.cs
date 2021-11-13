@@ -20,6 +20,8 @@ public class PlayerCombat : MonoBehaviour
 
     [Header("Projectile combat")]
     [SerializeField] protected GameObject projectile;
+    [SerializeField] protected GameObject bomb;
+    public float bombLaunchForce = 50f;
 
     private void Awake()
     {
@@ -63,15 +65,16 @@ public class PlayerCombat : MonoBehaviour
         attackTimer = attackSpeed;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, pc.aim, range);
 
+        //if hit, shoots at center point !fix!
         Vector3 endPos = hit.transform?.position ?? transform.position + ((Vector3)pc.aim * range);
         StartCoroutine(ShootLineRenderer(endPos));
 
-        if (hit.collider.gameObject.transform.parent != null && hit.collider.gameObject.transform.parent.TryGetComponent(out PlayerState player))
-        {
-            player.Die();
-        }
+        GameObject parent = hit.collider?.gameObject.transform.parent?.gameObject;
 
-        //if its a bomb, explode it
+        if (parent != null)
+        {
+            if(parent.TryGetComponent(out PlayerState player)) player.Die();
+        }
 
         Debug.Log(hit.collider?.gameObject.name + " was hit by " + gameObject.name);
     }
@@ -103,9 +106,9 @@ public class PlayerCombat : MonoBehaviour
     protected virtual void Attack_Bomb()
     {
         attackTimer = attackSpeed;
-        Bomb bombInstance = Instantiate(projectile, transform.position + ((Vector3)pc.aim * 3f), Quaternion.identity).GetComponent<Bomb>();
+        Bomb bombInstance = Instantiate(bomb, transform.position + ((Vector3)pc.aim * 3f), Quaternion.identity).GetComponent<Bomb>();
 
-        bombInstance.Launch(pc.aim * 50f);
+        bombInstance.Launch(pc.aim * bombLaunchForce);
     }
 
     protected bool CanAttack(InputAction.CallbackContext ctx)

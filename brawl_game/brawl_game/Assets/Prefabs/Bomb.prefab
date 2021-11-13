@@ -137,8 +137,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 5
   delay: 3
-  force: 15
+  force: 60
   visualTimer: {fileID: 638977175057149828}
+  explosion: {fileID: 5372992521969300782, guid: 58cb4207792365647a96e476909ba56c, type: 3}
 --- !u!1 &2040840809654960229
 GameObject:
   m_ObjectHideFlags: 0

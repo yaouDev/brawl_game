@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private InputMaster controls;
 
+    public AnimationCurve moveCurve;
     [SerializeField] private float dashFailTime = 3f;
     private float direction;
     private bool moving;
@@ -26,6 +27,12 @@ public class PlayerMovement : MonoBehaviour
     public float dashDistance = 5f;
 
     //--
+
+    //---
+    private float moveTime;
+    public float timeToMaxSpeed = 1f;
+
+    //---
 
     //private PlayerInput pi;
 
@@ -66,10 +73,23 @@ public class PlayerMovement : MonoBehaviour
     {
         if (moving)
         {
-            //acts weird with outside forces
-            Vector3 movement = new Vector3(direction, 0f);
-            transform.position += movement * Time.deltaTime * movementSpeed;
-            //rb.position += movement * Time.deltaTime * modifiedMovementSpeed;
+            if (moveTime < timeToMaxSpeed)
+            {
+                moveTime += Time.fixedDeltaTime;
+            }
+
+            //fix so that external forces dont maim movement ability
+            Vector2 movement = new Vector2(direction, 0f);
+
+            //add curve relation
+            float modifiedSpeed = movementSpeed * moveCurve.Evaluate(moveTime / timeToMaxSpeed);
+
+            //transform.position += movement * Time.deltaTime * modifiedSpeed;
+            rb.position += movement * Time.deltaTime * modifiedSpeed;
+        }
+        else
+        {
+
         }
     }
 
@@ -122,6 +142,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            moveTime = 0f;
+
             moving = false;
         }
     }
@@ -194,7 +216,11 @@ public class PlayerMovement : MonoBehaviour
     {
         isGrounded = GroundedCollision(collision);
 
-        if (isGrounded) jumpCount = 0;
+        if (isGrounded)
+        {
+            jumpCount = 0;
+            rb.velocity *= 0.8f;
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)

@@ -29,10 +29,15 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.TryGetComponent(out PlayerState player))
+        GameObject parent = collision.gameObject.transform.parent.gameObject;
+
+        if(parent != null)
         {
-            //add damage
-            player.Die();
+            if (parent.TryGetComponent(out PlayerState player))
+            {
+                //add damage
+                player.Die();
+            }
         }
 
         Destroy(gameObject);

@@ -24,6 +24,8 @@ public class PlayerState : MonoBehaviour
 
         currentLives--;
 
+        EventManager.instance.OnPlayerDeath_Action();
+
         if (currentLives <= 0)
         {
             Eliminate();
