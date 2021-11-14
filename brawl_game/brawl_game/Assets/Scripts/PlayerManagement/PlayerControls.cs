@@ -5,13 +5,14 @@ using UnityEngine.InputSystem;
 
 public class PlayerControls : MonoBehaviour
 {
-    //[Header("Read Only")]
+    
     //wipe upon start
     public Vector2 aim { get; private set; }
     //--
 
-    private PlayerCombat combat;
-    private PlayerMovement movement;
+    //[Header("Read Only")]
+    public PlayerCombat combat;
+    public PlayerMovement movement;
     private Player playerInfo;
 
     private void Start()

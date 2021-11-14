@@ -32,7 +32,7 @@ public class PlayerCombat : MonoBehaviour
         pc = transform.parent.gameObject.GetComponent<PlayerControls>();
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         Timers();
     }
@@ -111,10 +111,14 @@ public class PlayerCombat : MonoBehaviour
         lineRenderer.enabled = false;
     }
 
-    protected void Attack_Instantiate()
+    protected virtual Projectile Attack_Instantiate()
     {
         Projectile projectileInstance = Instantiate(projectile, transform.position + ((Vector3)pc.aim * 3f), Quaternion.identity).GetComponent<Projectile>();
         projectileInstance.shootDirection = pc.aim;
+
+        projectileInstance.SetOwner(gameObject);
+
+        return projectileInstance;
     }
 
     protected void Attack_Bomb()

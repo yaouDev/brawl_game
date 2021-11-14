@@ -12,6 +12,7 @@ public class Projectile : MonoBehaviour
     public Rigidbody2D rb;
     public CapsuleCollider2D col;
     public Vector3 shootDirection;
+    [SerializeField] protected GameObject owner;
 
     private void Awake()
     {
@@ -22,12 +23,12 @@ public class Projectile : MonoBehaviour
         Destroy(gameObject, deathTimer);
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         rb.velocity = shootDirection * projectileVelocity;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject parent = collision.gameObject.transform.parent.gameObject;
 
@@ -40,6 +41,13 @@ public class Projectile : MonoBehaviour
             }
         }
 
+        //sound and effects
+
         Destroy(gameObject);
+    }
+
+    public void SetOwner(GameObject go)
+    {
+        owner = go;
     }
 }

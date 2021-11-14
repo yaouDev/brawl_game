@@ -8,18 +8,18 @@ public class PlayerMovement : MonoBehaviour
     //private InputMaster controls;
 
     public AnimationCurve moveCurve;
-    [SerializeField] private float dashFailTime = 3f;
-    [SerializeField] private float groundedOffset = 0.2f;
-    private float direction;
-    private bool moving;
-    private bool isGrounded;
-    private int jumpCount;
+    [SerializeField] protected float dashFailTime = 3f;
+    [SerializeField] protected float groundedOffset = 0.2f;
+    protected float direction;
+    protected bool moving;
+    protected bool isGrounded;
+    protected int jumpCount;
 
-    private Rigidbody2D rb;
-    private CapsuleCollider2D col;
-    private PlayerControls pc;
+    protected Rigidbody2D rb;
+    protected CapsuleCollider2D col;
+    protected PlayerControls pc;
     
-    public float movementSpeed = 10f;
+    public float movementSpeed = 20f;
     public float jumpForce = 22f;
     public int jumpAmount = 2;
     public float dashSpeed = 2f;
@@ -30,14 +30,14 @@ public class PlayerMovement : MonoBehaviour
     //--
 
     //---
-    private float moveTime;
+    protected float moveTime;
     public float timeToMaxSpeed = 1f;
 
     //---
 
     //private PlayerInput pi;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         //controls = new InputMaster();
         //pi = transform.parent.gameObject.GetComponent<PlayerInput>();
@@ -70,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
     //    //controls.Player.Crouch.canceled += _ => CrouchCE(-1);
     //}
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (moving)
         {
@@ -159,7 +159,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void Down(InputAction.CallbackContext ctx)
+    public virtual void Down(InputAction.CallbackContext ctx)
     {
         if(ctx.performed && isGrounded && currentGround != null)
         {
@@ -177,9 +177,14 @@ public class PlayerMovement : MonoBehaviour
         float end = Time.time + duration;
         while(Time.time < end)
         {
+            if (col1 == null || col2 == null)
+            {
+                yield break;
+            }
+
             yield return null;
         }
-        
+
         if(Physics2D.GetIgnoreCollision(col1, col2))
         {
             Physics2D.IgnoreCollision(col1, col2, false);
@@ -195,7 +200,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public IEnumerator Dash()
+    public virtual IEnumerator Dash()
     {
         Vector3 startPos = transform.position;
         Vector3 endPos = startPos + (Vector3)(pc.aim * dashDistance);
@@ -212,11 +217,9 @@ public class PlayerMovement : MonoBehaviour
 
         rb.velocity = Vector2.zero;
         rb.AddForce(pc.aim * dashSpeed, ForceMode2D.Impulse);
-
-        Debug.Log("Dash!");
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         isGrounded = GroundedCollision(collision);
         currentGround = collision.gameObject;
@@ -228,7 +231,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    protected virtual void OnCollisionExit2D(Collision2D collision)
     {
         currentGround = null;
 
@@ -243,7 +246,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private bool GroundedCollision(Collision2D collision)
+    protected virtual bool GroundedCollision(Collision2D collision)
     {
         bool correctTag = collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Player") ? true : false;
         return (collision.gameObject.transform.position.y - groundedOffset < transform.position.y && correctTag) ? true : false;
