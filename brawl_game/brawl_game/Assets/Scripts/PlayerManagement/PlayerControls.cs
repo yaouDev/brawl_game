@@ -55,9 +55,9 @@ public class PlayerControls : MonoBehaviour
         movement?.Jump(ctx);
     }
 
-    public void Crouch(InputAction.CallbackContext ctx)
+    public void Down(InputAction.CallbackContext ctx)
     {
-        movement?.Crouch(ctx);
+        movement?.Down(ctx);
     }
 
     public void Dodge(InputAction.CallbackContext ctx)

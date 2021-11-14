@@ -18,15 +18,15 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private CapsuleCollider2D col;
     private PlayerControls pc;
-
-    [Header("Read Only")]
+    
     public float movementSpeed = 10f;
     public float jumpForce = 22f;
     public int jumpAmount = 2;
-    public int crouchDivider = 2;
     public float dashSpeed = 2f;
     public float dashDistance = 5f;
 
+    [Header("Read Only")]
+    public GameObject currentGround;
     //--
 
     //---
@@ -159,22 +159,30 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public virtual void Crouch(InputAction.CallbackContext ctx)
+    public void Down(InputAction.CallbackContext ctx)
     {
-        //add visual representation
-        if (ctx.performed)
+        if(ctx.performed && isGrounded && currentGround != null)
         {
-            col.size = new Vector2(col.size.x, col.size.y / crouchDivider);
-            col.offset = new Vector2(0f, -col.size.y / crouchDivider);
-
-            transform.localScale *= 0.5f;
+            if(currentGround.TryGetComponent(out PlatformEffector2D platform))
+            {
+                StartCoroutine(TemporaryNonCollision(platform?.gameObject.GetComponent<BoxCollider2D>(), col, 0.5f));
+            }
         }
-        else if (ctx.canceled)
-        {
-            col.size = new Vector2(col.size.x, col.size.y * crouchDivider);
-            col.offset = Vector2.zero;
+    }
 
-            transform.localScale *= 2f;
+    private IEnumerator TemporaryNonCollision(Collider2D col1, Collider2D col2, float duration)
+    {
+        Physics2D.IgnoreCollision(col1, col2);
+
+        float end = Time.time + duration;
+        while(Time.time < end)
+        {
+            yield return null;
+        }
+        
+        if(Physics2D.GetIgnoreCollision(col1, col2))
+        {
+            Physics2D.IgnoreCollision(col1, col2, false);
         }
     }
 
@@ -211,6 +219,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         isGrounded = GroundedCollision(collision);
+        currentGround = collision.gameObject;
 
         if (isGrounded)
         {
@@ -221,6 +230,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
+        currentGround = null;
+
         if (GroundedCollision(collision))
         {
             isGrounded = false;

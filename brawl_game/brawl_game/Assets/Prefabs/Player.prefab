@@ -84,22 +84,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2762847903711006833}
         m_TargetAssemblyTypeName: PlayerControls, Assembly-CSharp
-        m_MethodName: Crouch
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 5329fe96-2386-4bcf-ace2-373e617f90d9
-    m_ActionName: Player/Crouch[/Keyboard/s,/XInputControllerWindows/leftStick/down]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2762847903711006833}
-        m_TargetAssemblyTypeName: PlayerControls, Assembly-CSharp
         m_MethodName: Jump
         m_Mode: 0
         m_Arguments:
@@ -228,6 +212,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 447f6790-0ffe-450d-bcde-6262e080e894
     m_ActionName: Player/SpecialAttack[/Keyboard/rightArrow,/Keyboard/l]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2762847903711006833}
+        m_TargetAssemblyTypeName: PlayerControls, Assembly-CSharp
+        m_MethodName: Down
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 673a2773-ff04-4a3a-aa0f-56626ea2594b
+    m_ActionName: Player/Down[/Keyboard/s]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: MenuPlayer
