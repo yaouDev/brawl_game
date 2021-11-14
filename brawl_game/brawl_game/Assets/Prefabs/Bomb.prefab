@@ -330,3 +330,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 989278681962317144}
   offset: {x: 0, y: 3, z: 0}
+  originalSpeed: 4

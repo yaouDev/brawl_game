@@ -14,9 +14,13 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] protected int baseDamage = 1;
     [SerializeField] protected float shortRange = 1f;
     [SerializeField] protected float longRange = 20f;
-    [SerializeField] protected float attackSpeed = 1f;
     [SerializeField] protected float lineTime = 0.25f;
-    protected float attackTimer;
+    [SerializeField] protected float lightAttackSpeed = 1f;
+    [SerializeField] protected float heavyAttackSpeed = 2f;
+    [SerializeField] protected float specialAttackSpeed = 3f;
+    protected float lightAttackTimer;
+    protected float heavyAttackTimer;
+    protected float specialAttackTimer;
 
     [Header("Projectile combat")]
     [SerializeField] protected GameObject projectile;
@@ -30,43 +34,54 @@ public class PlayerCombat : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (attackTimer > 0f)
-        {
-            attackTimer -= Time.fixedDeltaTime;
-        }
+        Timers();
+    }
+
+    protected void Timers()
+    {
+        if (lightAttackTimer > 0f) lightAttackTimer -= Time.fixedDeltaTime;
+        if (heavyAttackTimer > 0f) heavyAttackTimer -= Time.fixedDeltaTime;
+        if (specialAttackTimer > 0f) specialAttackTimer -= Time.fixedDeltaTime;
     }
 
     public virtual void LightAttack(InputAction.CallbackContext ctx)
     {
-        if (CanAttack(ctx))
+        AttackType type = AttackType.light;
+
+        if (CanAttack(ctx, type))
         {
+            AttackCooldown(type);
             Attack_Raycast(longRange);
         }
     }
 
     public virtual void HeavyAttack(InputAction.CallbackContext ctx)
     {
-        if (CanAttack(ctx))
+        AttackType type = AttackType.heavy;
+
+        if (CanAttack(ctx, type))
         {
+            AttackCooldown(type);
             Attack_Bomb();
         }
     }
 
     public virtual void SpecialAttack(InputAction.CallbackContext ctx)
     {
-        if (CanAttack(ctx))
+        AttackType type = AttackType.special;
+
+        if (CanAttack(ctx, type))
         {
+            AttackCooldown(type);
             Attack_Instantiate();
         }
     }
 
-    protected virtual void Attack_Raycast(float range)
+    protected void Attack_Raycast(float range)
     {
-        attackTimer = attackSpeed;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, pc.aim, range);
 
-        //if hit, shoots at center point !fix!
-        Vector3 endPos = hit.transform?.position ?? transform.position + ((Vector3)pc.aim * range);
+        Vector2 endPos = hit.collider ? hit.point : (Vector2)transform.position + (pc.aim * range);
         StartCoroutine(ShootLineRenderer(endPos));
 
         GameObject parent = hit.collider?.gameObject.transform.parent?.gameObject;
@@ -79,7 +94,7 @@ public class PlayerCombat : MonoBehaviour
         Debug.Log(hit.collider?.gameObject.name + " was hit by " + gameObject.name);
     }
 
-    private IEnumerator ShootLineRenderer(Vector3 endPos)
+    protected IEnumerator ShootLineRenderer(Vector3 endPos)
     {
         lineRenderer.enabled = true;
 
@@ -96,23 +111,57 @@ public class PlayerCombat : MonoBehaviour
         lineRenderer.enabled = false;
     }
 
-    protected virtual void Attack_Instantiate()
+    protected void Attack_Instantiate()
     {
-        attackTimer = attackSpeed;
         Projectile projectileInstance = Instantiate(projectile, transform.position + ((Vector3)pc.aim * 3f), Quaternion.identity).GetComponent<Projectile>();
         projectileInstance.shootDirection = pc.aim;
     }
 
-    protected virtual void Attack_Bomb()
+    protected void Attack_Bomb()
     {
-        attackTimer = attackSpeed;
         Bomb bombInstance = Instantiate(bomb, transform.position + ((Vector3)pc.aim * 3f), Quaternion.identity).GetComponent<Bomb>();
 
         bombInstance.Launch(pc.aim * bombLaunchForce);
     }
 
-    protected bool CanAttack(InputAction.CallbackContext ctx)
+    protected void AttackCooldown(AttackType attackType)
     {
-        return ctx.performed && attackTimer <= 0f;
+        //casting an attack doesnt take time. there is cooldown before being able to use an individual ability again.
+        //lightAttackSpeed is effectively a "default" cooldown
+        switch (attackType)
+        {
+            case AttackType.light:
+                heavyAttackTimer = lightAttackSpeed;
+                specialAttackTimer = lightAttackSpeed;
+                break;
+            case AttackType.heavy:
+                heavyAttackTimer = heavyAttackSpeed;
+                specialAttackTimer = lightAttackSpeed;
+                break;
+            case AttackType.special:
+                heavyAttackTimer = lightAttackSpeed;
+                specialAttackTimer = specialAttackSpeed;
+                break;
+            default:
+                break;
+        }
+        //lightAttack always has the same cooldown
+        lightAttackTimer = lightAttackSpeed;
     }
+
+    protected bool CanAttack(InputAction.CallbackContext ctx, AttackType attacktype)
+    {
+        switch (attacktype)
+        {
+            case AttackType.light: return ctx.performed && lightAttackTimer <= 0f;
+            case AttackType.heavy: return ctx.performed && heavyAttackTimer <= 0f;
+            case AttackType.special: return ctx.performed && specialAttackTimer <= 0f;
+            default: return true;
+        }
+    }
+}
+
+public enum AttackType
+{
+    light, heavy, special
 }

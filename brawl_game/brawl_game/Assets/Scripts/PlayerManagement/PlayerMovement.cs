@@ -5,10 +5,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private InputMaster controls;
+    //private InputMaster controls;
 
     public AnimationCurve moveCurve;
     [SerializeField] private float dashFailTime = 3f;
+    [SerializeField] private float groundedOffset = 0.2f;
     private float direction;
     private bool moving;
     private bool isGrounded;
@@ -38,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        controls = new InputMaster();
+        //controls = new InputMaster();
         //pi = transform.parent.gameObject.GetComponent<PlayerInput>();
 
         rb = GetComponent<Rigidbody2D>();
@@ -86,10 +87,6 @@ public class PlayerMovement : MonoBehaviour
 
             //transform.position += movement * Time.deltaTime * modifiedSpeed;
             rb.position += movement * Time.deltaTime * modifiedSpeed;
-        }
-        else
-        {
-
         }
     }
 
@@ -143,7 +140,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             moveTime = 0f;
-
             moving = false;
         }
     }
@@ -239,7 +235,7 @@ public class PlayerMovement : MonoBehaviour
     private bool GroundedCollision(Collision2D collision)
     {
         bool correctTag = collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Player") ? true : false;
-        return (collision.gameObject.transform.position.y < transform.position.y && correctTag) ? true : false;
+        return (collision.gameObject.transform.position.y - groundedOffset < transform.position.y && correctTag) ? true : false;
     }
 
     //void Test(PlayerInput pi)

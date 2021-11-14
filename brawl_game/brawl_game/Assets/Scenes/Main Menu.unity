@@ -2131,6 +2131,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuPlayerPrefab: {fileID: 1959682241508307478, guid: cf51665c4daa8514aace47e8fe006256, type: 3}
+  player1Color: {r: 1, g: 0, b: 0, a: 1}
+  player2Color: {r: 0, g: 0, b: 1, a: 1}
+  player3Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  player4Color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &2126577956
 GameObject:
   m_ObjectHideFlags: 0
