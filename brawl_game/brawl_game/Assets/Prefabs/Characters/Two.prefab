@@ -611,8 +611,16 @@ MonoBehaviour:
   dashDistance: 5
   currentGround: {fileID: 0}
   timeToMaxSpeed: 1
-  pushForce: 2
+  pushMultiplier: 0.25
   velocityThreshold: 30
+  massWhileGrappled: 3
+  gravityWhileGrappled: 10
+  slamIgnoreCollisionTime: 0.5
+  grappled: 0
+  canPush: 0
+  originalMass: 0
+  originalGravity: 0
+  freezeBecauseSlam: 0
 --- !u!114 &4223055575901352076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -630,7 +638,7 @@ MonoBehaviour:
   shortRange: 1
   longRange: 20
   lineTime: 0.25
-  lightAttackSpeed: 1
+  lightAttackSpeed: 0.5
   heavyAttackSpeed: 2
   specialAttackSpeed: 3
   projectile: {fileID: 8846022207870475828, guid: 1db604cfa25416543876154f6095d965, type: 3}
@@ -639,8 +647,9 @@ MonoBehaviour:
   spawnablePlatform: {fileID: 5180760645050482959, guid: d80275c6b51604648a9dcdba5d85c89e, type: 3}
   offset: {x: 0, y: -2, z: 0}
   grappleLineRenderer: {fileID: 4656656977022450438}
+  maxSlamTime: 1
+  slamForce: 25
   shotHook: {fileID: 0}
-  grappled: 0
 --- !u!114 &4579979283451025724
 MonoBehaviour:
   m_ObjectHideFlags: 0

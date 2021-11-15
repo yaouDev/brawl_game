@@ -88,7 +88,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""id"": ""673a2773-ff04-4a3a-aa0f-56626ea2594b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Hold""
                 }
             ],
             ""bindings"": [

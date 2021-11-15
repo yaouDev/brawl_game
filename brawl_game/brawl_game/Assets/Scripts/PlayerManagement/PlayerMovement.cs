@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     protected Rigidbody2D rb;
     protected CapsuleCollider2D col;
     protected PlayerControls pc;
-    
+
     public float movementSpeed = 20f;
     public float jumpForce = 22f;
     public int jumpAmount = 2;
@@ -146,24 +146,27 @@ public class PlayerMovement : MonoBehaviour
 
     public virtual void Jump(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (ctx.performed && CanJump())
         {
             //cant jump if havent jumped as grounded
-            if (isGrounded && jumpCount == 0 || jumpCount < jumpAmount && jumpCount != 0)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, 0);
-                rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
 
-                jumpCount++;
-            }
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+
+            jumpCount++;
         }
+    }
+
+    public virtual bool CanJump()
+    {
+        return isGrounded && jumpCount == 0 || jumpCount < jumpAmount && jumpCount != 0;
     }
 
     public virtual void Down(InputAction.CallbackContext ctx)
     {
-        if(ctx.performed && isGrounded && currentGround != null)
+        if (ctx.performed && isGrounded && currentGround != null)
         {
-            if(currentGround.TryGetComponent(out PlatformEffector2D platform))
+            if (currentGround.TryGetComponent(out PlatformEffector2D platform))
             {
                 StartCoroutine(TemporaryNonCollision(platform?.gameObject.GetComponent<BoxCollider2D>(), col, 0.5f));
             }
@@ -175,7 +178,7 @@ public class PlayerMovement : MonoBehaviour
         Physics2D.IgnoreCollision(col1, col2);
 
         float end = Time.time + duration;
-        while(Time.time < end)
+        while (Time.time < end)
         {
             if (col1 == null || col2 == null)
             {
@@ -185,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        if(Physics2D.GetIgnoreCollision(col1, col2))
+        if (Physics2D.GetIgnoreCollision(col1, col2))
         {
             Physics2D.IgnoreCollision(col1, col2, false);
         }
@@ -205,7 +208,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 startPos = transform.position;
         Vector3 endPos = startPos + (Vector3)(pc.aim * dashDistance);
         float end = Time.time + dashFailTime;
-        while(Time.time < end || transform.position != endPos)
+        while (Time.time < end || transform.position != endPos)
         {
             transform.position = Vector3.MoveTowards(transform.position, endPos, dashSpeed);
             if (Vector3.Distance(transform.position, endPos) < 0.0025f)
@@ -240,7 +243,7 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
         }
 
-        if(jumpCount == 0)
+        if (jumpCount == 0)
         {
             jumpCount++;
         }

@@ -27,7 +27,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] protected GameObject bomb;
     public float bombLaunchForce = 50f;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         pc = transform.parent.gameObject.GetComponent<PlayerControls>();
     }

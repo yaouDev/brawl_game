@@ -20,9 +20,10 @@ public class Hook : Projectile
         grappledObject = collision.gameObject;
         rb.velocity = Vector2.zero;
 
-        if(owner.TryGetComponent(out TwoCombat twoCombat))
+        if(owner.TryGetComponent(out TwoMovement twoMove))
         {
-            twoCombat.grappled = true;
+            twoMove.grappled = true;
+            twoMove.canPush = true;
         }
 
         if (owner.TryGetComponent(out SpringJoint2D sj))
@@ -53,9 +54,9 @@ public class Hook : Projectile
                 sj.enabled = false;
             }
 
-            if (owner.TryGetComponent(out TwoCombat twoCombat))
+            if (owner.TryGetComponent(out TwoMovement twoMove))
             {
-                twoCombat.grappled = false;
+                twoMove.grappled = false;
             }
         }
     }
