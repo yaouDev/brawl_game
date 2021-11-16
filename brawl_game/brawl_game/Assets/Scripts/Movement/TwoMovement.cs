@@ -77,8 +77,8 @@ public class TwoMovement : PlayerMovement
                 {
                     ContactPoint2D point = collision.GetContact(0);
                     Vector2 pushPoint = point.point - (Vector2)transform.position;
-                    //Vector2 force = (pushPoint.normalized * Physics2D.gravity * pushMultiplier) - other.velocity;
-                    Vector2 force = (Physics2D.gravity * pushMultiplier) - other.velocity;
+                    //Vector2 force = point.normalImpulse * (rb.velocity * rb.mass) * pushMultiplier;
+                    Vector2 force = (point.normalImpulse * pushMultiplier) * pushPoint.normalized;
 
                     List<Collider2D> results = new List<Collider2D>();
                     if (other.GetAttachedColliders(results) > 0)
@@ -87,8 +87,7 @@ public class TwoMovement : PlayerMovement
                     }
 
                     Debug.Log($"Attempting to push {other.gameObject.name} by {force} at {pushPoint}!");
-                    //other.AddForce(force, ForceMode2D.Impulse);
-                    other.AddForceAtPosition(force, point.point, ForceMode2D.Impulse);
+                    other.AddForce(force, ForceMode2D.Impulse);
                     rb.velocity = Vector2.zero;
                 }
             }
@@ -110,6 +109,7 @@ public class TwoMovement : PlayerMovement
             ResetRigidbody();
             freezeBecauseThrow = false;
             trajectory.ToggleTrail(false);
+            //rb.sharedMaterial.bounciness = 0f;
         }
     }
 

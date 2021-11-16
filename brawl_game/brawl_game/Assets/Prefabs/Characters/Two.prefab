@@ -541,10 +541,10 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 0.03
   m_AngularDrag: 0
   m_GravityScale: 5
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 93b179e42f56c8f4794ca56f51b81f73, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -612,7 +612,7 @@ MonoBehaviour:
   dashDistance: 5
   currentGround: {fileID: 0}
   timeToMaxSpeed: 1
-  pushMultiplier: 1
+  pushMultiplier: 5
   velocityThreshold: 30
   massWhileGrappled: 3
   gravityWhileGrappled: 10
@@ -651,6 +651,7 @@ MonoBehaviour:
   grappleLineRenderer: {fileID: 4656656977022450438}
   maxSlamTime: 1
   slamForce: 25
+  bounciness: 6
   shotHook: {fileID: 0}
 --- !u!114 &4579979283451025724
 MonoBehaviour:

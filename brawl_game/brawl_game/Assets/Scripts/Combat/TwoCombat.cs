@@ -18,13 +18,13 @@ public class TwoCombat : PlayerCombat
     private float slamHold;
     private bool isHolding;
     private bool canSlam;
+    //public float bounciness = 6f;
 
     [Header("Read Only")]
     [SerializeField] private GameObject shotHook;
     private Rigidbody2D rb;
     private TwoMovement movement;
 
-    //--
     private Trajectory trajectory;
 
     protected override void Awake()
@@ -111,6 +111,9 @@ public class TwoCombat : PlayerCombat
         {
             shotHook = Attack_Instantiate().gameObject;
             grappleLineRenderer.enabled = true;
+            //---
+            //rb.sharedMaterial.bounciness = bounciness;
+            //---
 
             trajectory.FreezePoints(false);
             trajectory.ToggleTrail(true);

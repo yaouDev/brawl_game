@@ -44,7 +44,6 @@ public class Trajectory : MonoBehaviour
     private Vector2 PointPosition(float t)
     {
         Vector2 initVel = rb.velocity * (rb.mass / rb.gravityScale);
-        //Vector2 initVel = rb.velocity;
         Vector2 acc = Physics2D.gravity;
         Vector2 position = shotPosition + (initVel * t) + 0.5f * acc * (t * t);
         return position;
