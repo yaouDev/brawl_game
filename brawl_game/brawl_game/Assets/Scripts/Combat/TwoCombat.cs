@@ -24,10 +24,14 @@ public class TwoCombat : PlayerCombat
     private Rigidbody2D rb;
     private TwoMovement movement;
 
+    //--
+    private Trajectory trajectory;
+
     protected override void Awake()
     {
         base.Awake();
         rb = GetComponent<Rigidbody2D>();
+        trajectory = GetComponent<Trajectory>();
     }
 
     private void Start()
@@ -47,6 +51,7 @@ public class TwoCombat : PlayerCombat
         else if(shotHook == null && grappleLineRenderer.enabled)
         {
             DisableGrapple();
+            movement.freezeBecauseThrow = true;
         }
 
         if(slamHold < maxSlamTime && isHolding)
@@ -85,6 +90,7 @@ public class TwoCombat : PlayerCombat
     {
         movement.ResetRigidbody();
         Vector3 initPos = transform.position;
+        rb.velocity = Vector2.zero;
 
         float end = Time.time + maxSlamTime;
         while(Time.time < end && isHolding)
@@ -105,11 +111,16 @@ public class TwoCombat : PlayerCombat
         {
             shotHook = Attack_Instantiate().gameObject;
             grappleLineRenderer.enabled = true;
+
+            trajectory.FreezePoints(false);
+            trajectory.ToggleTrail(true);
         }
 
         if (ctx.canceled && shotHook != null)
         {
             AttackCooldown(AttackType.heavy);
+
+            trajectory.FreezePoints(true);
 
             if (shotHook != null)
             {

@@ -432,6 +432,7 @@ GameObject:
   - component: {fileID: -3066288793547936514}
   - component: {fileID: 4223055575901352076}
   - component: {fileID: 4579979283451025724}
+  - component: {fileID: 6907794095841754752}
   - component: {fileID: 1003213778513309320}
   m_Layer: 7
   m_Name: Two
@@ -540,8 +541,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0.03
-  m_AngularDrag: 0.05
+  m_LinearDrag: 0
+  m_AngularDrag: 0
   m_GravityScale: 5
   m_Material: {fileID: 0}
   m_Interpolate: 1
@@ -611,7 +612,7 @@ MonoBehaviour:
   dashDistance: 5
   currentGround: {fileID: 0}
   timeToMaxSpeed: 1
-  pushMultiplier: 0.25
+  pushMultiplier: 1
   velocityThreshold: 30
   massWhileGrappled: 3
   gravityWhileGrappled: 10
@@ -621,6 +622,7 @@ MonoBehaviour:
   originalMass: 0
   originalGravity: 0
   freezeBecauseSlam: 0
+  freezeBecauseThrow: 0
 --- !u!114 &4223055575901352076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -664,6 +666,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   threshold: 50
   bounceMaterial: {fileID: 6200000, guid: 2cc37743d06bd7c42b9d68e716ccfc4b, type: 2}
+--- !u!114 &6907794095841754752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5678455826316014761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4589d64d69fc54244b847d941cd387d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  point: {fileID: 4604535546863594130, guid: 44ec072c39c9d9e4483f0c088384b99e, type: 3}
+  numberOfPoints: 200
+  spaceBetweenPoints: 0.025
+  shotPosition: {x: 0, y: 0}
 --- !u!231 &1003213778513309320
 SpringJoint2D:
   m_ObjectHideFlags: 0
@@ -838,6 +856,10 @@ PrefabInstance:
     - target: {fileID: 5270855805652383358, guid: 7ae126dbc1b66304bb5dca4e0d14ed92, type: 3}
       propertyPath: m_Name
       value: DashTrail
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270855805652383358, guid: 7ae126dbc1b66304bb5dca4e0d14ed92, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ae126dbc1b66304bb5dca4e0d14ed92, type: 3}

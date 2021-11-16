@@ -18,7 +18,9 @@ public class TwoMovement : PlayerMovement
     [SerializeField] private float originalMass;
     [SerializeField] private float originalGravity;
     public bool freezeBecauseSlam;
+    public bool freezeBecauseThrow;
     private TwoCombat combat;
+    private Trajectory trajectory;
 
     protected override void Awake()
     {
@@ -26,6 +28,7 @@ public class TwoMovement : PlayerMovement
 
         originalMass = rb.mass;
         originalGravity = rb.gravityScale;
+        trajectory = GetComponent<Trajectory>();
     }
 
     private void Start()
@@ -48,7 +51,7 @@ public class TwoMovement : PlayerMovement
     public override void Move(InputAction.CallbackContext ctx)
     {
         //is set in combat
-        if (freezeBecauseSlam) return;
+        if (freezeBecauseSlam || freezeBecauseThrow) return;
         base.Move(ctx);
     }
 
@@ -74,7 +77,8 @@ public class TwoMovement : PlayerMovement
                 {
                     ContactPoint2D point = collision.GetContact(0);
                     Vector2 pushPoint = point.point - (Vector2)transform.position;
-                    Vector2 force = pushPoint * pushMultiplier * (rb.mass * rb.velocity.sqrMagnitude);
+                    //Vector2 force = (pushPoint.normalized * Physics2D.gravity * pushMultiplier) - other.velocity;
+                    Vector2 force = (Physics2D.gravity * pushMultiplier) - other.velocity;
 
                     List<Collider2D> results = new List<Collider2D>();
                     if (other.GetAttachedColliders(results) > 0)
@@ -83,7 +87,8 @@ public class TwoMovement : PlayerMovement
                     }
 
                     Debug.Log($"Attempting to push {other.gameObject.name} by {force} at {pushPoint}!");
-                    other.AddForce(force, ForceMode2D.Impulse);
+                    //other.AddForce(force, ForceMode2D.Impulse);
+                    other.AddForceAtPosition(force, point.point, ForceMode2D.Impulse);
                     rb.velocity = Vector2.zero;
                 }
             }
@@ -103,6 +108,8 @@ public class TwoMovement : PlayerMovement
         {
             canPush = false;
             ResetRigidbody();
+            freezeBecauseThrow = false;
+            trajectory.ToggleTrail(false);
         }
     }
 
@@ -122,7 +129,7 @@ public class TwoMovement : PlayerMovement
 
         for (int i = 0; i < colliders.Count; i++)
         {
-            if(Physics2D.GetIgnoreCollision(col, colliders[i]))
+            if(colliders[i] != null && Physics2D.GetIgnoreCollision(col, colliders[i]))
             {
                 Physics2D.IgnoreCollision(col, colliders[i], false);
             }
