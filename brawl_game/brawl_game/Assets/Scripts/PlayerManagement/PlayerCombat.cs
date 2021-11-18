@@ -18,6 +18,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] protected float lightAttackSpeed = 1f;
     [SerializeField] protected float heavyAttackSpeed = 2f;
     [SerializeField] protected float specialAttackSpeed = 3f;
+    [SerializeField] protected float enemyGroundLift = 0.1f; 
     protected float lightAttackTimer;
     protected float heavyAttackTimer;
     protected float specialAttackTimer;
@@ -51,7 +52,7 @@ public class PlayerCombat : MonoBehaviour
         if (CanAttack(ctx, type))
         {
             AttackCooldown(type);
-            Attack_Raycast(longRange);
+            Attack_Raycast(longRange, baseDamage);
         }
     }
 
@@ -77,21 +78,33 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    protected void Attack_Raycast(float range)
+    protected void Attack_Raycast(float range, float hitForce, bool draw)
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, pc.aim, range);
 
         Vector2 endPos = hit.collider ? hit.point : (Vector2)transform.position + (pc.aim * range);
-        StartCoroutine(ShootLineRenderer(endPos));
+        if(draw) StartCoroutine(ShootLineRenderer(endPos));
 
         GameObject parent = hit.collider?.gameObject.transform.parent?.gameObject;
 
         if (parent != null)
         {
-            if(parent.TryGetComponent(out PlayerState player)) player.Die();
+            if (parent.TryGetComponent(out PlayerState player))
+            {
+                Transform child = player.transform.GetChild(0);
+                child.position = new Vector3(child.position.x, child.position.y + enemyGroundLift);
+
+                Vector2 force = -hit.normal * hitForce;
+                player.TakeHit(force);
+            }
         }
 
         Debug.Log(hit.collider?.gameObject.name + " was hit by " + gameObject.name);
+    }
+
+    protected void Attack_Raycast(float range, float hitForce)
+    {
+        Attack_Raycast(range, hitForce, true);
     }
 
     protected IEnumerator ShootLineRenderer(Vector3 endPos)

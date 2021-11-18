@@ -18,6 +18,12 @@ public class PlayerState : MonoBehaviour
         currentLives = startingLives;
     }
 
+    public void TakeHit(Vector2 hitForce)
+    {
+        Debug.Log($"{gameObject.name} was hit by {hitForce}");
+        childPlayer?.GetComponent<Rigidbody2D>().AddForce(hitForce, ForceMode2D.Impulse);
+    }
+
     public void Die()
     {
         Debug.Log($"Player {playerInfo?.playerId} was killed!");

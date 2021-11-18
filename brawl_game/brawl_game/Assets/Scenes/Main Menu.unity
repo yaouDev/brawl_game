@@ -1456,7 +1456,7 @@ MonoBehaviour:
       m_Calls: []
   colliderFitToSize: 0
   entered: []
-  character: {fileID: 5678455826316014761, guid: d25b48f6dbac2b94bb745a7f036f2278, type: 3}
+  character: {fileID: 5678455826316014761, guid: 36e2994b00320fc429b7e42e443869ef, type: 3}
 --- !u!114 &1576181538
 MonoBehaviour:
   m_ObjectHideFlags: 0
