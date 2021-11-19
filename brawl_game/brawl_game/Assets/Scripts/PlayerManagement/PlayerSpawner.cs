@@ -61,5 +61,10 @@ public class PlayerSpawner : MonoBehaviour
             go.transform.position = spawnPositions[spawnCounter].position;
             spawnCounter++;
         }
+
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("Dummy"))
+        {
+            go.GetComponent<PlayerState>().Refresh();
+        }
     }
 }

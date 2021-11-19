@@ -6,26 +6,35 @@ public class PlayerState : MonoBehaviour
 {
     private Player playerInfo;
     public int startingLives = 3;
+    public float invulnerableTime = 2f;
+    private float respawnTimer;
 
     [Header("Read Only")]
     public GameObject childPlayer;
+    private Rigidbody2D childRb;
     public int currentLives;
+    [SerializeField] private bool invulnerable;
 
     public void Refresh()
     {
         playerInfo = GetComponent<Player>();
-        childPlayer = GetComponentInChildren<PlayerMovement>().gameObject;
+        childRb = GetComponentInChildren<Rigidbody2D>();
+        childPlayer = childRb.gameObject;
         currentLives = startingLives;
     }
 
     public void TakeHit(Vector2 hitForce)
     {
+        if (invulnerable) return;
+
         Debug.Log($"{gameObject.name} was hit by {hitForce}");
-        childPlayer?.GetComponent<Rigidbody2D>().AddForce(hitForce, ForceMode2D.Impulse);
+        childRb?.AddForce(hitForce, ForceMode2D.Impulse);
     }
 
     public void Die()
     {
+        if (invulnerable) return;
+
         Debug.Log($"Player {playerInfo?.playerId} was killed!");
 
         currentLives--;
@@ -35,18 +44,34 @@ public class PlayerState : MonoBehaviour
         if (currentLives <= 0)
         {
             Eliminate();
+            return;
         }
 
-        childPlayer.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         Respawn();
+    }
+
+    private IEnumerator RespawnInvulnerable(Vector3 freezePos)
+    {
+        invulnerable = true;
+
+        float end = Time.time + invulnerableTime;
+        while(Time.time < end)
+        {
+            if (childRb != null) childRb.velocity = Vector2.zero;
+            childPlayer.transform.position = freezePos;
+            yield return null;
+        }
+
+        invulnerable = false;
     }
 
     private void Respawn()
     {
+        if (childRb != null) childRb.velocity = Vector2.zero;
         int randomNumber = Random.Range(0, PlayerSpawner.instance.spawnPositions.Length - 1);
         Vector3 spawnPos = PlayerSpawner.instance.spawnPositions[randomNumber].position;
 
-        childPlayer.transform.position = spawnPos;
+        StartCoroutine(RespawnInvulnerable(spawnPos));
     }
 
     private void Eliminate()

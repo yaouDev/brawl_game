@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6387326470350303675}
   m_Layer: 0
   m_Name: Dummy
-  m_TagString: Untagged
+  m_TagString: Dummy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,6 +58,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c76f9945c2ebd4897cefd5d254e699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combat: {fileID: 0}
+  movement: {fileID: 0}
 --- !u!114 &6387326470350303675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,9 +72,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e66e72883555444b9fbb6b0e199102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingLives: 3
+  startingLives: 500
+  invulnerableTime: 2
   childPlayer: {fileID: 6446281720811712167}
-  currentLives: 3
+  currentLives: 500
+  invulnerable: 0
 --- !u!1001 &1709158317764598286
 PrefabInstance:
   m_ObjectHideFlags: 0

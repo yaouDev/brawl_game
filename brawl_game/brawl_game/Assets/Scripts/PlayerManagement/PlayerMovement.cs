@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    //private InputMaster controls;
+    //disable collider while dodging?
 
     public AnimationCurve moveCurve;
     [SerializeField] protected float dashFailTime = 3f;
