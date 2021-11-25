@@ -24,6 +24,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] public Color player3Color = Color.yellow;
     [SerializeField] public Color player4Color = Color.green;
 
+    [Header("Fill in the character tag")]
+    [SerializeField] private string playerTag;
+
     //[Header("Read Only")]
     public PlayerInputManager pim { get; private set; }
 
@@ -43,6 +46,7 @@ public class PlayerManager : MonoBehaviour
         //ToggleActionMap(inputActions.MenuPlayer);
 
         pim.onPlayerJoined += player => AddPlayer(player);
+        EventManager.instance.onPlayerElimination += CheckForLivingPlayers;
     }
 
     public void AddPlayer(PlayerInput pi)
@@ -92,6 +96,27 @@ public class PlayerManager : MonoBehaviour
             case 2: return player3Color;
             case 3: return player4Color;
             default: return Color.black;
+        }
+    }
+
+    public void CheckForLivingPlayers()
+    {
+        if(playerTag.Length < 0)
+        {
+            Debug.LogWarning("Player Tag is 0");
+            return;
+        }
+
+        GameObject[] livingPlayers = GameObject.FindGameObjectsWithTag(playerTag);
+
+        if(livingPlayers.Length <= 1)
+        {
+            gm.EndGame();
+        }
+
+        foreach (var go in livingPlayers)
+        {
+            Debug.Log(go.name + " is still living!");
         }
     }
 

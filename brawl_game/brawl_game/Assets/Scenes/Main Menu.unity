@@ -901,6 +901,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 952830254}
   m_CullTransparentMesh: 1
+--- !u!1 &1353544846
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1353544848}
+  - component: {fileID: 1353544847}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1353544847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353544846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be5f56e77a987947a3c7b5ab7034937, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Explosion
+    clip: {fileID: 8300000, guid: 4ecffed4f55594448b06660db9920bd4, type: 3}
+    mixerGroup: {fileID: -223820518374421693, guid: 63c82781ab4f74e498effda8745dfb7f, type: 2}
+    volume: 0.02
+    pitch: 2
+    loop: 0
+    source: {fileID: 0}
+--- !u!4 &1353544848
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353544846}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1377543657
 GameObject:
   m_ObjectHideFlags: 0
@@ -2392,6 +2443,7 @@ MonoBehaviour:
   player2Color: {r: 0, g: 0, b: 1, a: 1}
   player3Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   player4Color: {r: 0, g: 1, b: 0, a: 1}
+  playerTag: Player
 --- !u!1 &2126577956
 GameObject:
   m_ObjectHideFlags: 0

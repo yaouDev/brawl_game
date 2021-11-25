@@ -25,10 +25,11 @@ public class PlayerState : MonoBehaviour
 
     public void TakeHit(Vector2 hitForce)
     {
-        if (invulnerable) return;
+        if (invulnerable || childRb == null) return;
 
         Debug.Log($"{gameObject.name} was hit by {hitForce}");
-        childRb?.AddForce(hitForce, ForceMode2D.Impulse);
+        childRb.velocity = Vector2.zero;
+        childRb.AddForce(hitForce, ForceMode2D.Impulse);
     }
 
     public void Die()
@@ -55,7 +56,7 @@ public class PlayerState : MonoBehaviour
         invulnerable = true;
 
         float end = Time.time + invulnerableTime;
-        while(Time.time < end)
+        while (Time.time < end)
         {
             if (childRb != null) childRb.velocity = Vector2.zero;
             childPlayer.transform.position = freezePos;
@@ -76,10 +77,13 @@ public class PlayerState : MonoBehaviour
 
     private void Eliminate()
     {
-        GetComponent<PlayerControls>().OnDeath();
+        GetComponent<PlayerControls>().OnElimination();
 
         //wait for animations/particles/sound to play out
         Debug.Log($"Player {GetComponent<Player>().playerId} was eliminated!!!");
+        childPlayer.tag = "Dead"; //bruh really
         Destroy(childPlayer);
+        EventManager.instance.OnPlayerElimination_Action();
     }
 }
+

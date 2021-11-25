@@ -59,6 +59,13 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void EndGame()
+    {
+
+        SetGameState(GameState.mainMenu);
+        SceneManager.LoadScene(0);
+    }
+
     public void SetGameState(GameState newState)
     {
         state = newState;

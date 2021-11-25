@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PlayerSpawner : MonoBehaviour
 {
@@ -45,13 +46,15 @@ public class PlayerSpawner : MonoBehaviour
         {
             go.GetComponentInChildren<MenuPlayer>().gameObject.SetActive(false);
 
-            Instantiate(go.GetComponent<CharacterSelection>().selected, go.transform);
+            GameObject character = Instantiate(go.GetComponent<CharacterSelection>().selected, go.transform);
+            SetPlayerIndicator(character, go);
 
             PlayerControls pc = go.GetComponent<PlayerControls>();
             pc?.GetPlayerScripts();
 
             PlayerInput pi = go.GetComponent<PlayerInput>();
             pi.SwitchCurrentActionMap(pm.inputActions.Player.Get().name);
+
 
             //destroy things
             //Destroy(go.GetComponentInChildren<MenuPlayer>().gameObject);
@@ -66,5 +69,17 @@ public class PlayerSpawner : MonoBehaviour
         {
             go.GetComponent<PlayerState>().Refresh();
         }
+    }
+
+    private void SetPlayerIndicator(GameObject character, GameObject player)
+    {
+        TMP_Text text = character.GetComponentInChildren<TMP_Text>();
+
+        if (text == null) return;
+
+        int id = player.GetComponent<Player>().playerId;
+        text.gameObject.GetComponent<UIFollowGameObject>().target = character.transform;
+        text.color = pm.GetPlayerColor(id);
+        text.text = $"Player {id + 1}";
     }
 }

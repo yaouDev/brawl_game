@@ -14,6 +14,7 @@ public class EventManager : MonoBehaviour
 
     public event Action test;
     public event Action onPlayerDeath;
+    public event Action onPlayerElimination;
 
     public void Test()
     {
@@ -23,5 +24,10 @@ public class EventManager : MonoBehaviour
     public void OnPlayerDeath_Action()
     {
         if (onPlayerDeath != null) onPlayerDeath.Invoke();
+    }
+
+    public void OnPlayerElimination_Action()
+    {
+        if (onPlayerElimination != null) onPlayerElimination.Invoke();
     }
 }

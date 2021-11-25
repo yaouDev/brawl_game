@@ -92,7 +92,7 @@ public class PlayerControls : MonoBehaviour
         return Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, angle + 90f);
     }
 
-    public void OnDeath()
+    public void OnElimination()
     {
         movement = null;
         aim = Vector2.zero;

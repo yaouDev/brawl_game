@@ -18,10 +18,11 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] protected float lightAttackSpeed = 1f;
     [SerializeField] protected float heavyAttackSpeed = 2f;
     [SerializeField] protected float specialAttackSpeed = 3f;
-    [SerializeField] protected float enemyGroundLift = 0.1f; 
+    [SerializeField] protected float enemyGroundLift = 0.1f;
     protected float lightAttackTimer;
     protected float heavyAttackTimer;
     protected float specialAttackTimer;
+    protected CharacterSound cs;
 
     [Header("Projectile combat")]
     [SerializeField] protected GameObject projectile;
@@ -31,6 +32,11 @@ public class PlayerCombat : MonoBehaviour
     protected virtual void Awake()
     {
         pc = transform.parent.gameObject.GetComponent<PlayerControls>();
+    }
+
+    private void Start()
+    {
+        cs = GetComponent<CharacterSound>();
     }
 
     protected virtual void FixedUpdate()
@@ -47,35 +53,17 @@ public class PlayerCombat : MonoBehaviour
 
     public virtual void LightAttack(InputAction.CallbackContext ctx)
     {
-        AttackType type = AttackType.light;
 
-        if (CanAttack(ctx, type))
-        {
-            AttackCooldown(type);
-            Attack_Raycast(longRange, baseDamage);
-        }
     }
 
     public virtual void HeavyAttack(InputAction.CallbackContext ctx)
     {
-        AttackType type = AttackType.heavy;
 
-        if (CanAttack(ctx, type))
-        {
-            AttackCooldown(type);
-            Attack_Bomb();
-        }
     }
 
     public virtual void SpecialAttack(InputAction.CallbackContext ctx)
     {
-        AttackType type = AttackType.special;
 
-        if (CanAttack(ctx, type))
-        {
-            AttackCooldown(type);
-            Attack_Instantiate();
-        }
     }
 
     protected void Attack_Raycast(float range, float hitForce, bool draw)
@@ -83,7 +71,7 @@ public class PlayerCombat : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, pc.aim, range);
 
         Vector2 endPos = hit.collider ? hit.point : (Vector2)transform.position + (pc.aim * range);
-        if(draw) StartCoroutine(ShootLineRenderer(endPos));
+        if (draw) StartCoroutine(ShootLineRenderer(endPos));
 
         GameObject parent = hit.collider?.gameObject.transform.parent?.gameObject;
 
@@ -164,6 +152,17 @@ public class PlayerCombat : MonoBehaviour
         }
         //lightAttack always has the same cooldown
         lightAttackTimer = lightAttackSpeed;
+    }
+
+    protected void PlayAttackSound(AttackType attackType)
+    {
+        switch (attackType)
+        {
+            case AttackType.light: AudioManager.instance.Play("LightAttack", cs.characterSounds); break;
+            case AttackType.heavy: AudioManager.instance.Play("HeavyAttack", cs.characterSounds); break;
+            case AttackType.special: AudioManager.instance.Play("SpecialAttack", cs.characterSounds); break;
+            default: break;
+        }
     }
 
     protected bool CanAttack(InputAction.CallbackContext ctx, AttackType attacktype)

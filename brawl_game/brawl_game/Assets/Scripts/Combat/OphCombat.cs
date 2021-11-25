@@ -20,16 +20,23 @@ public class OphCombat : PlayerCombat
 
     public override void LightAttack(InputAction.CallbackContext ctx)
     {
-        //shotgun!
-        if (CanAttack(ctx, AttackType.light))
+        if (!CanAttack(ctx, AttackType.light))
         {
-            Shotgun();
+            return;
         }
+
+        Shotgun();
+        PlayAttackSound(AttackType.light);
     }
 
     public override void HeavyAttack(InputAction.CallbackContext ctx)
     {
-        if (CanAttack(ctx, AttackType.heavy) && !sniperHold)
+        if (!CanAttack(ctx, AttackType.heavy))
+        {
+            return;
+        }
+
+        if (!sniperHold)
         {
             sniperHold = true;
             StartCoroutine(SniperShot());
@@ -102,6 +109,7 @@ public class OphCombat : PlayerCombat
         {
             Attack_Raycast(longRange, sniperForce, false);
             AttackCooldown(AttackType.heavy);
+            PlayAttackSound(AttackType.heavy);
         }
 
         //reset linerenderer
