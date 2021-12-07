@@ -51,20 +51,11 @@ public class PlayerCombat : MonoBehaviour
         if (specialAttackTimer > 0f) specialAttackTimer -= Time.fixedDeltaTime;
     }
 
-    public virtual void LightAttack(InputAction.CallbackContext ctx)
-    {
+    public virtual void LightAttack(InputAction.CallbackContext ctx) { }
 
-    }
+    public virtual void HeavyAttack(InputAction.CallbackContext ctx) { }
 
-    public virtual void HeavyAttack(InputAction.CallbackContext ctx)
-    {
-
-    }
-
-    public virtual void SpecialAttack(InputAction.CallbackContext ctx)
-    {
-
-    }
+    public virtual void SpecialAttack(InputAction.CallbackContext ctx) { }
 
     protected void Attack_Raycast(float range, float hitForce, bool draw)
     {

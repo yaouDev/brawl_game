@@ -10,6 +10,7 @@ public class OphCombat : PlayerCombat
     [Header("Shotgun")]
     public float shotgunForce = 30f;
     public ShotgunHitbox shotgun;
+    public GameObject shotgunBlast;
 
     [Header("Sniper")]
     public float sniperMaxCharge = 2f;
@@ -27,12 +28,14 @@ public class OphCombat : PlayerCombat
 
         Shotgun();
         PlayAttackSound(AttackType.light);
+        AttackCooldown(AttackType.light);
     }
 
     public override void HeavyAttack(InputAction.CallbackContext ctx)
     {
         if (!CanAttack(ctx, AttackType.heavy))
         {
+            print("on cooldown");
             return;
         }
 
@@ -51,6 +54,8 @@ public class OphCombat : PlayerCombat
 
     private void Shotgun()
     {
+        Instantiate(shotgunBlast, (Vector2)transform.position + pc.aim,  pc.GetAngle() * Quaternion.Euler(0f, 0f, -90f));
+
         foreach (GameObject go in shotgun.entered)
         {
             if (go.TryGetComponent(out PlayerCombat player))
@@ -78,14 +83,7 @@ public class OphCombat : PlayerCombat
         //linerenderer
         lineRenderer.enabled = true;
 
-        float lrws = lineRenderer.startWidth;
-        float lrwe = lineRenderer.endWidth;
-        lineRenderer.startWidth = 0f;
-        lineRenderer.endWidth = 0f;
-        Color lrsc = lineRenderer.startColor;
-        Color lrec = lineRenderer.endColor;
-        lineRenderer.startColor = new Color(255, 255, 255, 0);
-        lineRenderer.endColor = new Color(255, 255, 255, 0);
+        LRData startData = SetSniperColor();
 
         Color targetColor = Color.red;
 
@@ -99,8 +97,8 @@ public class OphCombat : PlayerCombat
             lineRenderer.startWidth += Time.deltaTime * (sniperCharge / sniperMaxCharge) * maxLineWidth;
             lineRenderer.endWidth += Time.deltaTime * (sniperCharge / sniperMaxCharge) * maxLineWidth;
 
-            lineRenderer.startColor = Color.Lerp(lrsc, targetColor, sniperCharge / sniperMaxCharge);
-            lineRenderer.endColor = Color.Lerp(lrec, targetColor, sniperCharge / sniperMaxCharge);
+            lineRenderer.startColor = Color.Lerp(startData.cx, targetColor, sniperCharge / sniperMaxCharge);
+            lineRenderer.endColor = Color.Lerp(startData.cy, targetColor, sniperCharge / sniperMaxCharge);
 
             yield return null;
         }
@@ -110,15 +108,42 @@ public class OphCombat : PlayerCombat
             Attack_Raycast(longRange, sniperForce, false);
             AttackCooldown(AttackType.heavy);
             PlayAttackSound(AttackType.heavy);
+            sniperCharge = 0f;
+            sniperHold = false;
         }
 
         //reset linerenderer
-        lineRenderer.startColor = lrsc;
-        lineRenderer.endColor = lrec;
+        lineRenderer.startColor = startData.cx;
+        lineRenderer.endColor = startData.cy;
 
-        lineRenderer.startWidth = lrws;
-        lineRenderer.endWidth = lrwe;
+        lineRenderer.startWidth = startData.wx;
+        lineRenderer.endWidth = startData.wy;
 
         lineRenderer.enabled = false;
+    }
+
+    private LRData SetSniperColor()
+    {
+        LRData startSpecs = new LRData(lineRenderer.startColor, lineRenderer.endColor, lineRenderer.startWidth, lineRenderer.endWidth);
+        lineRenderer.startColor = new Color(255, 255, 255, 0);
+        lineRenderer.endColor = new Color(255, 255, 255, 0);
+        return startSpecs;
+    }
+}
+
+public struct LRData
+{
+    public readonly Color cx;
+    public readonly Color cy;
+
+    public readonly float wx;
+    public readonly float wy;
+
+    public LRData(Color x, Color y, float a, float b)
+    {
+        cx = x;
+        cy = y;
+        wx = a;
+        wy = b;
     }
 }
