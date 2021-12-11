@@ -51,11 +51,13 @@ public class PlayerCombat : MonoBehaviour
         if (specialAttackTimer > 0f) specialAttackTimer -= Time.fixedDeltaTime;
     }
 
-    public virtual void LightAttack(InputAction.CallbackContext ctx) { }
+    public virtual void LightAttack(InputAction.CallbackContext ctx) { NotImplementedMessage(ctx); }
 
-    public virtual void HeavyAttack(InputAction.CallbackContext ctx) { }
+    public virtual void HeavyAttack(InputAction.CallbackContext ctx) { NotImplementedMessage(ctx); }
 
-    public virtual void SpecialAttack(InputAction.CallbackContext ctx) { }
+    public virtual void SpecialAttack(InputAction.CallbackContext ctx) { NotImplementedMessage(ctx); }
+
+    private void NotImplementedMessage(InputAction.CallbackContext ctx) { Debug.LogWarning(ctx.action.name + " is not implemented"); }
 
     protected void Attack_Raycast(float range, float hitForce, bool draw)
     {
@@ -149,9 +151,9 @@ public class PlayerCombat : MonoBehaviour
     {
         switch (attackType)
         {
-            case AttackType.light: AudioManager.instance.Play("LightAttack", cs.characterSounds); break;
-            case AttackType.heavy: AudioManager.instance.Play("HeavyAttack", cs.characterSounds); break;
-            case AttackType.special: AudioManager.instance.Play("SpecialAttack", cs.characterSounds); break;
+            case AttackType.light: AudioManager.instance.Play("LightAttack", false, transform.position, cs.characterSounds); break;
+            case AttackType.heavy: AudioManager.instance.Play("HeavyAttack", false, transform.position, cs.characterSounds); break;
+            case AttackType.special: AudioManager.instance.Play("SpecialAttack", false, transform.position, cs.characterSounds); break;
             default: break;
         }
     }

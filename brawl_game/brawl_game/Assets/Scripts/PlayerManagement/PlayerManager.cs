@@ -32,6 +32,11 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Extensions.CheckIfAlreadyExists(this))
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance ??= this;
 
         DontDestroyOnLoad(gameObject);
@@ -62,8 +67,9 @@ public class PlayerManager : MonoBehaviour
 
         //change back to playerCounter if something weird happens
         players.Add(pi.playerIndex, pi.gameObject);
-        Player playerIteration = pi.gameObject.GetComponent<Player>();
-        playerIteration.SetId(pi.playerIndex);
+        Player playerInstance = pi.gameObject.GetComponent<Player>();
+        playerInstance.SetId(pi.playerIndex);
+        playerInstance.SetMenuPlayer(pi.GetComponentInChildren<MenuPlayer>().gameObject);
         //playerCounter++;
 
         AddCharacterSelection();

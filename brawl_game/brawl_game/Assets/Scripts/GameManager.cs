@@ -16,6 +16,11 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Extensions.CheckIfAlreadyExists(this))
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance ??= this;
         DontDestroyOnLoad(gameObject);
     }
@@ -61,7 +66,16 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
+        SpawnMenuPlayers();
 
+        //take care of dummies
+        GameObject[] dummies = GameObject.FindGameObjectsWithTag("Dummy");
+        for (int i = 0; i < dummies.Length; i++)
+        {
+            Destroy(dummies[i]);
+        }
+
+        //change scene
         SetGameState(GameState.mainMenu);
         SceneManager.LoadScene(0);
     }
@@ -69,6 +83,23 @@ public class GameManager : MonoBehaviour
     public void SetGameState(GameState newState)
     {
         state = newState;
+    }
+
+    private void SpawnMenuPlayers()
+    {
+        //change actionmap
+        //InputMaster controls = new InputMaster();
+        //controls.Disable();
+        //controls.MenuPlayer.Enable();
+
+        foreach (GameObject go in pm.players.Values)
+        {
+            go.GetComponent<Player>().menuPlayer.SetActive(true);
+            if (go.TryGetComponent(out PlayerCombat character)) Destroy(character.gameObject);
+
+            PlayerInput pi = go.GetComponent<PlayerInput>();
+            pi.SwitchCurrentActionMap(pm.inputActions.MenuPlayer.Get().name);
+        }
     }
 }
 

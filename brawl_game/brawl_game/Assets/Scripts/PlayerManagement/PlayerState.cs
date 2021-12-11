@@ -18,8 +18,9 @@ public class PlayerState : MonoBehaviour
     public void Refresh()
     {
         playerInfo = GetComponent<Player>();
-        childRb = GetComponentInChildren<Rigidbody2D>();
-        childPlayer = childRb.gameObject;
+        Debug.Log($"Player {playerInfo.playerId} was refreshed!");
+        childPlayer = GetComponentInChildren<PlayerCombat>().gameObject;
+        childRb = childPlayer.GetComponent<Rigidbody2D>();
         currentLives = startingLives;
     }
 
@@ -68,9 +69,11 @@ public class PlayerState : MonoBehaviour
 
     private void Respawn()
     {
+        //playerspawners respawn array gets nulled upon replay and i dont know why
+
         if (childRb != null) childRb.velocity = Vector2.zero;
         int randomNumber = Random.Range(0, PlayerSpawner.instance.spawnPositions.Length - 1);
-        Vector3 spawnPos = PlayerSpawner.instance.spawnPositions[randomNumber].position;
+        Vector3 spawnPos = PlayerSpawner.instance.spawnPositions[randomNumber]?.position ?? new Vector3(0f, 3f);
 
         StartCoroutine(RespawnInvulnerable(spawnPos));
     }

@@ -37,14 +37,15 @@ public class PlayerSpawner : MonoBehaviour
         int spawnCounter = 0;
 
         //change actionmap
-        InputMaster controls = new InputMaster();
-        controls.Disable();
-        controls.Player.Enable();
+        //InputMaster controls = new InputMaster();
+        //controls.Disable();
+        //controls.Player.Enable();
         //pm.ToggleActionMap(pm.inputActions.Player);
 
         foreach (GameObject go in pm.players.Values)
         {
-            go.GetComponentInChildren<MenuPlayer>().gameObject.SetActive(false);
+            //go.GetComponentInChildren<MenuPlayer>().gameObject.SetActive(false);
+            go.GetComponent<Player>().menuPlayer.SetActive(false);
 
             GameObject character = Instantiate(go.GetComponent<CharacterSelection>().selected, go.transform);
             SetPlayerIndicator(character, go);

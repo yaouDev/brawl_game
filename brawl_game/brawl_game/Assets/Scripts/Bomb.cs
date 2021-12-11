@@ -70,7 +70,7 @@ public class Bomb : MonoBehaviour
     {
         //effects and sound
         Instantiate(explosion, transform.position, Quaternion.identity);
-        AudioManager.instance.Play("Explosion");
+        AudioManager.instance.Play("Explosion", true, transform.position);
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius);
 

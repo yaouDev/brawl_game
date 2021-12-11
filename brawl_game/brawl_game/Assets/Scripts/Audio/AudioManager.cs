@@ -5,10 +5,21 @@ using System;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
+
+    [Range(0, 1)]
+    public float panningStrength;
+    public float pitchMin = 0.75f;
+    public float pitchMax = 1.25f;
+
     public Sound[] sounds;
 
     private void Awake()
     {
+        if (Extensions.CheckIfAlreadyExists(this))
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance ??= this;
 
         foreach(Sound s in sounds)
@@ -19,17 +30,20 @@ public class AudioManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void Play(string soundName)
+    public void Play(string soundName, bool varyPitch, Vector3 currentPos)
     {
-        Play(soundName, sounds);
+        Play(soundName, true, currentPos, sounds);
     }
 
-    public void Play(string soundName, Sound[] collection)
+    public void Play(string soundName, bool varyPitch, Vector3 currentPos, Sound[] collection)
     {
         Sound s = Array.Find(collection, sound => sound.name == soundName);
 
         if(s != null)
         {
+            s.source.panStereo = currentPos.normalized.x * panningStrength;
+
+            if (varyPitch) s.source.pitch = UnityEngine.Random.Range(pitchMin, pitchMax);
             s.source.PlayOneShot(s.clip);
         }
         else

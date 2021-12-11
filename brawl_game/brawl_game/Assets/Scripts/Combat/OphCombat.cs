@@ -21,7 +21,7 @@ public class OphCombat : PlayerCombat
 
     public override void LightAttack(InputAction.CallbackContext ctx)
     {
-        if (!CanAttack(ctx, AttackType.light))
+        if (!CanAttack(ctx, AttackType.light) || sniperHold)
         {
             return;
         }
@@ -50,6 +50,16 @@ public class OphCombat : PlayerCombat
             sniperCharge = 0f;
             sniperHold = false;
         }
+    }
+
+    public override void SpecialAttack(InputAction.CallbackContext ctx)
+    {
+        if (!CanAttack(ctx, AttackType.special) || sniperHold)
+        {
+            return;
+        }
+
+        base.SpecialAttack(ctx);
     }
 
     private void Shotgun()

@@ -560,14 +560,14 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 4ecffed4f55594448b06660db9920bd4, type: 3}
     mixerGroup: {fileID: -4042698699795053156, guid: 63c82781ab4f74e498effda8745dfb7f, type: 2}
     volume: 0.02
-    pitch: 1
+    pitch: 3
     loop: 0
     source: {fileID: 0}
   - name: HeavyAttack
     clip: {fileID: 8300000, guid: 4ecffed4f55594448b06660db9920bd4, type: 3}
     mixerGroup: {fileID: -4042698699795053156, guid: 63c82781ab4f74e498effda8745dfb7f, type: 2}
     volume: 0.02
-    pitch: 0.2
+    pitch: 3
     loop: 0
     source: {fileID: 0}
   - name: SpecialAttack
